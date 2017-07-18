@@ -5,6 +5,8 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Sprite.hpp"
+#include "GlslProgram.hpp"
 
 enum class GameState {PLAY, EXIT};
 
@@ -20,6 +22,7 @@ class MainGame {
 
     private:
         void        processInput();
+        void        initShaders();
         void        gameLoop();
         void        initSystems();
         GLFWwindow  *window;
@@ -28,6 +31,9 @@ class MainGame {
         GameState   gameState;
         void        handleContext();
         void        drawGame();
+        Sprite      sprite;
+        GlslProgram colorProgram;
+        float       time;
 };
 
 #endif

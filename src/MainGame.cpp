@@ -1,11 +1,14 @@
 #include "MainGame.hpp"
 
-MainGame::MainGame(void)
+
+MainGame::MainGame(void) :
+    window(NULL),
+    screenWidth(640),
+    screenHeight(480),
+    gameState(GameState::PLAY),
+    time(0.0f)
 {
-    window = NULL;
-    screenWidth = 640;
-    screenHeight = 480;
-    gameState = GameState::PLAY;
+
 }
 
 MainGame::~MainGame(void)
@@ -16,6 +19,8 @@ MainGame::~MainGame(void)
 void    MainGame::run()
 {
     initSystems();
+
+    sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
     gameLoop();
 }
 
@@ -34,6 +39,16 @@ void    MainGame::initSystems()
     handleContext();
 
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+
+    initShaders();
+}
+
+void    MainGame::initShaders()
+{
+    colorProgram.compileShaders("src/shaders/colorShading.vert", "src/shaders/colorShading.frag");
+    colorProgram.addAttribute("vertexPosition");
+    colorProgram.addAttribute("vertexColor");
+    colorProgram.linkShaders();
 }
 
 /* initialize GLFW*/
@@ -58,7 +73,11 @@ int     MainGame::createWindow(int width, int height)
 
 void        MainGame::processInput()
 {
-    while (!glfwWindowShouldClose(window)) {
+    if (glfwWindowShouldClose(window)) {
+        glfwTerminate();
+        exit(0);
+    }
+    else {
         glfwPollEvents();
         /*turned key_callback into a lambda function
         **the processInput function is now in one place
@@ -71,17 +90,17 @@ void        MainGame::processInput()
                 exit(0);
             }
         });
-    }
-    glfwTerminate();
-    exit(0);
+    } 
 }
 
 void        MainGame::gameLoop() 
 {
     while (gameState != GameState::EXIT)
     {
+        time += 0.1f;
+        std::cout << "time is " << time << std::endl;
         drawGame();
-        processInput();      
+        processInput();
     }
 }
 
@@ -100,7 +119,18 @@ void MainGame::drawGame()
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    colorProgram.use();
+
+    GLuint  timeLocation = colorProgram.getUniformLocation("time");
+    glUniform1f(timeLocation, time);
+
+    sprite.draw();
+
+    colorProgram.unuse();
+
     glfwSwapBuffers(window);
+
+    
 
 }
 

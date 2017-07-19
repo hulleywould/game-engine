@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo apt-get install libglew-dev 
+sudo apt-get install cmake libglew-dev 

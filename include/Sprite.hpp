@@ -1,21 +1,24 @@
 #ifndef SPRITE_HPP
 # define SPRITE_HPP
 
+#include <GL/glew.h>
+
 class Sprite {
 
     public:
         Sprite(void);
         ~Sprite(void);
 
-        void    init(int x, int y, int width, int height);
+        void    init(float x, float y, float width, float height);
 
         void    draw();
 
     private:
-        int     x;
-        int     y;
-        int width;
-        int height;
+        float             x;
+        float             y;
+        float             width;
+        float             height;
+        GLuint          vboID; //vertext buffer object ID. GLuint guaranteed to be 32bits
         
 };
 

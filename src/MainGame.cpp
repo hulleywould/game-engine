@@ -1,5 +1,6 @@
 #include "MainGame.hpp"
 
+
 MainGame::MainGame(void)
 {
     window = NULL;
@@ -16,6 +17,8 @@ MainGame::~MainGame(void)
 void    MainGame::run()
 {
     initSystems();
+
+    sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
     gameLoop();
 }
 
@@ -34,6 +37,15 @@ void    MainGame::initSystems()
     handleContext();
 
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+
+    initShaders();
+}
+
+void    MainGame::initShaders()
+{
+    colorProgram.compileShaders("src/shaders/colorShading.vert", "src/shaders/colorShading.frag");
+    colorProgram.addAttribute("vertexPosition");
+    colorProgram.linkShaders();
 }
 
 /* initialize GLFW*/
@@ -99,6 +111,12 @@ void MainGame::drawGame()
     glClearDepth(1.0);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    colorProgram.use();
+
+    sprite.draw();
+
+    colorProgram.unuse();
 
     glfwSwapBuffers(window);
 

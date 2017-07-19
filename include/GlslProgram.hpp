@@ -18,6 +18,7 @@ class GlslProgram {
         void    addAttribute(const std::string attributeName);
         void    use();
         void    unuse();
+        GLuint  getUniformLocation(const std::string &uniformName);
 
     private:
         GLuint  programID;

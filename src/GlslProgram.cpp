@@ -76,6 +76,18 @@ void    GlslProgram::linkShaders()
 
 }
 
+GLuint  GlslProgram::getUniformLocation(const std::string &uniformName)
+{
+    GLuint location = glGetUniformLocation(programID, uniformName.c_str());
+    if (location == GL_INVALID_INDEX)
+    {
+        std::cout << "UniformName: " << uniformName <<
+         " not found in shader." << std::endl;
+        exit(0);
+    }
+    return location;
+}
+
 void    GlslProgram::use()
 {
     glUseProgram(programID);

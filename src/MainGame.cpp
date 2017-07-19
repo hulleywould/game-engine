@@ -1,12 +1,14 @@
 #include "MainGame.hpp"
 
 
-MainGame::MainGame(void)
+MainGame::MainGame(void) :
+    window(NULL),
+    screenWidth(640),
+    screenHeight(480),
+    gameState(GameState::PLAY),
+    time(0.0f)
 {
-    window = NULL;
-    screenWidth = 640;
-    screenHeight = 480;
-    gameState = GameState::PLAY;
+
 }
 
 MainGame::~MainGame(void)
@@ -71,7 +73,11 @@ int     MainGame::createWindow(int width, int height)
 
 void        MainGame::processInput()
 {
-    while (!glfwWindowShouldClose(window)) {
+    if (glfwWindowShouldClose(window)) {
+        glfwTerminate();
+        exit(0);
+    }
+    else {
         glfwPollEvents();
         /*turned key_callback into a lambda function
         **the processInput function is now in one place
@@ -84,17 +90,17 @@ void        MainGame::processInput()
                 exit(0);
             }
         });
-    }
-    glfwTerminate();
-    exit(0);
+    } 
 }
 
 void        MainGame::gameLoop() 
 {
     while (gameState != GameState::EXIT)
     {
+        time += 0.1f;
+        std::cout << "time is " << time << std::endl;
         drawGame();
-        processInput();      
+        processInput();
     }
 }
 
@@ -115,11 +121,16 @@ void MainGame::drawGame()
 
     colorProgram.use();
 
+    GLuint  timeLocation = colorProgram.getUniformLocation("time");
+    glUniform1f(timeLocation, time);
+
     sprite.draw();
 
     colorProgram.unuse();
 
     glfwSwapBuffers(window);
+
+    
 
 }
 

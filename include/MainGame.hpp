@@ -33,6 +33,7 @@ class MainGame {
         void        drawGame();
         Sprite      sprite;
         GlslProgram colorProgram;
+        float       time;
 };
 
 #endif

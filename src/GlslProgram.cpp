@@ -17,6 +17,8 @@ GlslProgram::~GlslProgram(void)
 void    GlslProgram::compileShaders(const std::string &vertexShaderFilePath,
                                     const std::string &fragmentShaderFilePath)
 {
+    programID = glCreateProgram();
+
     vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     if (vertexShaderID == 0)
         std::cout << "error, vertex shader failed with NULL" << std::endl;
@@ -34,7 +36,7 @@ void    GlslProgram::compileShaders(const std::string &vertexShaderFilePath,
 
 void    GlslProgram::linkShaders()
 {
-    programID = glCreateProgram();
+   
 
     //Attach our shaders to our program
     glAttachShader(programID, vertexShaderID);

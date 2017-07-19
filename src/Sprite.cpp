@@ -25,27 +25,45 @@ void    Sprite::init(float xpos, float ypos, float objWidth, float objHeight)
         glGenBuffers(1, &vboID);
     }
 
-    float vertexData[12];
+    Vertex vertexData[6];
 
     //first traingle
-    vertexData[0] = x + objWidth;
-    vertexData[1] = y + objWidth;
+    vertexData[0].position.x = x + objWidth;
+    vertexData[0].position.y = y + objWidth;
 
-    vertexData[2] = x;
-    vertexData[3] = y + objHeight;
+    vertexData[1].position.x = x;
+    vertexData[1].position.y = y + objHeight;
 
-    vertexData[4] = x;
-    vertexData[5] = y;
+    vertexData[2].position.x = x;
+    vertexData[2].position.y = y;
 
     //second triangle
-    vertexData[6] = x;
-    vertexData[7] = y;
+    vertexData[3].position.x = x;
+    vertexData[3].position.y = y;
 
-    vertexData[8] = x + objWidth;
-    vertexData[9] = y;
+    vertexData[4].position.x = x + objWidth;
+    vertexData[4].position.y = y;
 
-    vertexData[10] = x + objWidth;
-    vertexData[11] = y + objHeight;
+    vertexData[5].position.x = x + objWidth;
+    vertexData[5].position.y = y + objHeight;
+
+    for (int i = 0; i < 6; i++)
+    {
+        vertexData[i].color.r = 255;
+        vertexData[i].color.g = 0;
+        vertexData[i].color.b = 255;
+        vertexData[i].color.a = 255;
+    }
+
+    vertexData[1].color.r = 0;
+    vertexData[1].color.g = 0;
+    vertexData[1].color.b = 255;
+    vertexData[1].color.a = 255;
+
+    vertexData[4].color.r = 0;
+    vertexData[4].color.g = 255;
+    vertexData[4].color.b = 0;
+    vertexData[4].color.a = 255;
 
     glBindBuffer(GL_ARRAY_BUFFER, vboID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
@@ -60,7 +78,11 @@ void    Sprite::draw()
 
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    //Posotion attribute pointer
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
+
+     //Color attribute pointer
+    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void *)offsetof(Vertex, color));
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 

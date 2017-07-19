@@ -18,7 +18,7 @@ void    MainGame::run()
 {
     initSystems();
 
-    sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
+    sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
     gameLoop();
 }
 
@@ -45,6 +45,7 @@ void    MainGame::initShaders()
 {
     colorProgram.compileShaders("src/shaders/colorShading.vert", "src/shaders/colorShading.frag");
     colorProgram.addAttribute("vertexPosition");
+    colorProgram.addAttribute("vertexColor");
     colorProgram.linkShaders();
 }
 

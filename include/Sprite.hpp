@@ -2,6 +2,8 @@
 # define SPRITE_HPP
 
 #include <GL/glew.h>
+#include "vertex.h"
+#include <cstddef>
 
 class Sprite {
 

@@ -2,11 +2,13 @@
 # define VERTEX_H
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 
-struct          Position {
+/*struct          Position {
     float       x;
     float       y;
-};
+    float       z;
+};*/
 
 struct          Color {
     GLubyte     r;
@@ -16,8 +18,9 @@ struct          Color {
 };
 
 struct          Vertex {
-     Position   position;
-     Color      color;
+    glm::vec3   position;
+    //Position    position;
+    Color       color;
         
 };
 

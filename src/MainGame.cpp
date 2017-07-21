@@ -20,7 +20,7 @@ void    MainGame::run()
 {
     initSystems();
 
-    sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
+    
     gameLoop();
 }
 
@@ -106,7 +106,6 @@ void        MainGame::gameLoop()
 
 void MainGame::handleContext()
 {
-    
     glewExperimental = GL_TRUE;
     GLenum error = glewInit();
     if (GLEW_OK != error)
@@ -123,6 +122,14 @@ void MainGame::drawGame()
 
     GLuint  timeLocation = colorProgram.getUniformLocation("time");
     glUniform1f(timeLocation, time);
+
+    Vertex vertices[3];
+
+    vertices[0].position = glm::vec3(-0.5, -0.5, 0);
+    vertices[1].position = glm::vec3(0, 0.5, 0);
+    vertices[3].position = glm::vec3(0.5, -0.5, 0);
+
+    sprite.init2(vertices, sizeof(vertices) / sizeof(vertices[0]));
 
     sprite.draw();
 

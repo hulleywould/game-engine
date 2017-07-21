@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include "vertex.h"
 #include <cstddef>
+#include <iostream>
 
 class Sprite {
 
@@ -11,16 +12,24 @@ class Sprite {
         Sprite(void);
         ~Sprite(void);
 
-        void    init(float x, float y, float width, float height);
+        void    init(float x, float y, float z, float width, float height);
+        void    init2(Vertex *vertices, unsigned int numVertices);
 
         void    draw();
 
     private:
+        enum {
+            POSITION_VB,
+            NUM_BUFFERS
+        };
         float             x;
         float             y;
+        float             z;
         float             width;
         float             height;
-        GLuint          vboID; //vertext buffer object ID. GLuint guaranteed to be 32bits
+        GLuint          vaoID; //vertex array object ID.
+        GLuint          vboID[POSITION_VB]; //vertext buffer object ID. GLuint guaranteed to be 32bits
+        unsigned int    drawCount;
         
 };
 

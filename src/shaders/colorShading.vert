@@ -1,17 +1,12 @@
 #version 130
 
-in vec3 vertexPosition;
-in vec4 vertexColor;
+attribute vec3 position;
+attribute vec2 texCoord;
 
-out vec3 fragmentPosition;
-out vec4 fragmentColor;
+varying vec2 texCoord0;
 
 void    main() {
-    gl_Position.xyz = vertexPosition;
-    gl_Position.w = 1.0;
-
-    fragmentPosition = vertexPosition;
-
-    fragmentColor = vertexColor;
+    gl_Position = vec4(position, 1.0);
+    texCoord0 = texCoord;
 }
 

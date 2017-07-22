@@ -10,7 +10,7 @@ file(GLOB SOURCES "src/*.cpp")
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 find_package(PkgConfig REQUIRED)
-find_package(glfw3 3.2 REQUIRED)
+find_package(glfw3 3.1 REQUIRED)
 find_package(GLEW REQUIRED)
 
 find_package(OpenGL REQUIRED)

@@ -20,7 +20,6 @@ void    MainGame::run()
 {
     initSystems();
 
-    
     gameLoop();
 }
 
@@ -38,7 +37,7 @@ void    MainGame::initSystems()
     glfwMakeContextCurrent(window);
     handleContext();
 
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(0.5f, 0.7f, 0.0f, 1.0f);
 
     initShaders();
 }
@@ -46,8 +45,8 @@ void    MainGame::initSystems()
 void    MainGame::initShaders()
 {
     colorProgram.compileShaders("src/shaders/colorShading.vert", "src/shaders/colorShading.frag");
-    colorProgram.addAttribute("vertexPosition");
-    colorProgram.addAttribute("vertexColor");
+    colorProgram.addAttribute("position");
+    colorProgram.addAttribute("texCoord");
     colorProgram.linkShaders();
 }
 
@@ -97,8 +96,8 @@ void        MainGame::gameLoop()
 {
     while (gameState != GameState::EXIT)
     {
-        time += 0.1f;
-        std::cout << "time is " << time << std::endl;
+        //time += 0.1f;
+        //std::cout << "time is " << time << std::endl;
         drawGame();
         processInput();
     }
@@ -120,24 +119,21 @@ void MainGame::drawGame()
 
     colorProgram.use();
 
-    GLuint  timeLocation = colorProgram.getUniformLocation("time");
-    glUniform1f(timeLocation, time);
+    //GLuint  timeLocation = colorProgram.getUniformLocation("time");
+    //glUniform1f(timeLocation, time);
 
-    Vertex vertices[3];
+    Vertex vertices[] = {   Vertex(glm::vec3(-0.5, -0.5, 0.0), glm::vec2(1.0, 0.0)),
+                            Vertex(glm::vec3(0.0, 0.5, 0.0), glm::vec2(0.0, -1.0)),
+                            Vertex(glm::vec3(0.5, -0.5, 0.0), glm::vec2(-0.5, 0.0)) };
 
-    vertices[0].position = glm::vec3(-0.5, -0.5, 0);
-    vertices[1].position = glm::vec3(0, 0.5, 0);
-    vertices[3].position = glm::vec3(0.5, -0.5, 0);
-
-    sprite.init2(vertices, sizeof(vertices) / sizeof(vertices[0]));
-
+    Sprite sprite(vertices, sizeof(vertices) / sizeof(vertices[0]));
+    Texture texture("assets/cat.jpg");
+    
     sprite.draw();
 
     colorProgram.unuse();
 
     glfwSwapBuffers(window);
-
-    
 
 }
 

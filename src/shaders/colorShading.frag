@@ -1,13 +1,9 @@
 #version 130
 
-in vec3 fragmentPosition;
-in vec4 fragmentColor;
-out vec4 color;
+varying vec2 texCoord0;
 
-uniform float time;
+uniform sampler2D diffuse;
 
 void main() {
-    color = vec4(fragmentColor.r * (sin(fragmentPosition.x * 4.0 + time) + 1.0) * 0.5,
-                fragmentColor.g * (sin(fragmentPosition.y * 8.0 + time) + 1.0) * 0.5,
-                fragmentColor.b * (sin(fragmentPosition.z * 2.0 + time)  + 1.0) * 0.5, 0.0);
+    gl_FragColor = texture2D(diffuse, texCoord0);
 }

@@ -9,6 +9,9 @@
 #include "Sprite.hpp"
 #include "Texture.hpp"
 #include "GlslProgram.hpp"
+#include "Camera.hpp"
+#include "HandleMeshData.hpp"
+
 
 enum class GameState {PLAY, EXIT};
 
@@ -21,6 +24,13 @@ class MainGame {
         
         int     initGL();
         int     createWindow(int width, int height);
+
+        //getters and setters
+        int         &getWidth();
+        int         &getHeight();
+
+        void        setWidth(const int &w);
+        void        setHeight(const int &h);
 
     private:
         void        processInput();
@@ -35,7 +45,9 @@ class MainGame {
         void        drawGame();
         GlslProgram colorProgram;
         float       time;
-        
+        float       counter;
+        Camera      camera;
+        HandleMeshData meshData;
 };
 
 #endif

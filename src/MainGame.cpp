@@ -6,10 +6,13 @@ MainGame::MainGame(void) :
     screenWidth(640),
     screenHeight(480),
     gameState(GameState::PLAY),
-    time(0.0f)
+    time(0.0f),
+    counter(0.0f),
+    camera(),
+    meshData()
 {
 
-}
+}    
 
 MainGame::~MainGame(void)
 {
@@ -38,6 +41,7 @@ void    MainGame::initSystems()
     handleContext();
 
     glClearColor(0.5f, 0.7f, 0.0f, 1.0f);
+    camera.initCamera(glm::vec3(0.0, 0.0, -2.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f);
 
     initShaders();
 }
@@ -59,7 +63,7 @@ int     MainGame::initGL()
 
 int     MainGame::createWindow(int width, int height)
 {
-    window = glfwCreateWindow(width, height, "GameEngine", NULL, NULL);
+    window = glfwCreateWindow(getWidth(), getHeight(), "GameEngine", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -88,6 +92,9 @@ void        MainGame::processInput()
                 glfwTerminate();
                 exit(0);
             }
+            else if(key == GLFW_KEY_UP && action == GLFW_PRESS) {
+                
+            }
         });
     } 
 }
@@ -97,9 +104,10 @@ void        MainGame::gameLoop()
     while (gameState != GameState::EXIT)
     {
         //time += 0.1f;
-        //std::cout << "time is " << time << std::endl;
+        //std::cout << "counter is " << counter << std::endl;
         drawGame();
         processInput();
+        counter += 0.001f;
     }
 }
 
@@ -117,23 +125,49 @@ void MainGame::drawGame()
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    float sinCounter = sinf(counter);
+    float cosCounter = cosf(counter);
+    
+    Transform   transform;
+    transform.getPos().x = sinCounter;
+    transform.getPos().z = cosCounter;
+    transform.getRot().x = counter * 50;
+    transform.getRot().y = counter * 50;
+    transform.getRot().z = counter * 50;
+
     colorProgram.use();
 
-    //GLuint  timeLocation = colorProgram.getUniformLocation("time");
-    //glUniform1f(timeLocation, time);
-
-    Vertex vertices[] = {   Vertex(glm::vec3(-0.5, -0.5, 0.0), glm::vec2(1.0, 0.0)),
-                            Vertex(glm::vec3(0.0, 0.5, 0.0), glm::vec2(0.0, -1.0)),
-                            Vertex(glm::vec3(0.5, -0.5, 0.0), glm::vec2(-0.5, 0.0)) };
-
-    Sprite sprite(vertices, sizeof(vertices) / sizeof(vertices[0]));
+    GLuint transformUniform = colorProgram.getUniformLocation("transform");
     Texture texture("assets/cat.jpg");
     
-    sprite.draw();
-
+    colorProgram.update(transform, camera);
+    
+    meshData.handleMesh();
+    
     colorProgram.unuse();
 
     glfwSwapBuffers(window);
 
+}
+
+//getters and setters
+int&        MainGame::getWidth()
+{
+    return screenWidth;
+}
+
+int&        MainGame::getHeight()
+{
+    return screenHeight;
+}
+
+void        MainGame::setWidth(const int &w)
+{
+    screenWidth = w;
+}
+
+void        MainGame::setHeight(const int &h)
+{
+    screenHeight = h;
 }
 

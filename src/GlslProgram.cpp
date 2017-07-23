@@ -30,14 +30,10 @@ void    GlslProgram::compileShaders(const std::string &vertexShaderFilePath,
 
     compileShader(vertexShaderFilePath, vertexShaderID);
     compileShader(fragmentShaderFilePath, fragmentShaderID);
-
-
 }
 
 void    GlslProgram::linkShaders()
 {
-   
-
     //Attach our shaders to our program
     glAttachShader(programID, vertexShaderID);
     glAttachShader(programID, fragmentShaderID);
@@ -73,7 +69,6 @@ void    GlslProgram::linkShaders()
     glDetachShader(programID, fragmentShaderID);
     glDeleteShader(vertexShaderID);
     glDeleteShader(fragmentShaderID);
-
 }
 
 GLuint  GlslProgram::getUniformLocation(const std::string &uniformName)
@@ -95,12 +90,20 @@ void    GlslProgram::use()
         glEnableVertexAttribArray(i);
     }
 }
+
 void    GlslProgram::unuse()
 {
     glUseProgram(0);
     for (int i = 0; i < numAttributes; i++) {
         glDisableVertexAttribArray(i);
     }
+}
+
+void    GlslProgram::update(const Transform &transform, const Camera &camera)
+{
+    glm::mat4 modelViewProjection = camera.getViewProjection() * transform.getModel();
+    //set GL_FALSE to GL_TRUE if matrix must be transposed
+    glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &modelViewProjection[0][0]);
 }
 
 void    GlslProgram::addAttribute(const std::string attributeName)

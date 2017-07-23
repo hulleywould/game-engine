@@ -6,6 +6,8 @@
 #include <GL/glew.h>
 #include <fstream>
 #include <vector>
+#include "Transform.hpp"
+#include "Camera.hpp"
 
 class GlslProgram {
     public:
@@ -18,9 +20,15 @@ class GlslProgram {
         void    addAttribute(const std::string attributeName);
         void    use();
         void    unuse();
+        void    update(const Transform &transform, const Camera &camera);
         GLuint  getUniformLocation(const std::string &uniformName);
 
     private:
+        enum {
+            TRANSFORM_U,
+            NUM_UNIFORMS
+        };
+        GLuint  uniforms[NUM_UNIFORMS];
         GLuint  programID;
         GLuint  vertexShaderID;
         GLuint  fragmentShaderID;

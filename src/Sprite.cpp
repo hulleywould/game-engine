@@ -5,34 +5,46 @@ Sprite::Sprite(void)
     vaoID = 0;
 
 }
+
+Sprite::Sprite(const std::string &fileName)
+{
+    IndexedModel model = OBJModel(fileName).ToIndexedModel();
+    initMesh(model);
+}
+
 Sprite::~Sprite(void)
 {
     glDeleteVertexArrays(1, &vaoID);
 
 }
 
-Sprite::Sprite(Vertex *vertices, unsigned int numVertices)
+Sprite::Sprite(Vertex *vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
 {
-    drawCount = numVertices;
+    IndexedModel model;
+
+    for(unsigned int i = 0; i < numVertices; i++){
+        model.positions.push_back(*vertices[i].getPos());
+        model.texCoords.push_back(*vertices[i].getTex());
+    }
+
+    for (unsigned int i = 0; i < numIndices; i++){
+        model.indices.push_back(indices[i]); 
+    }
+
+    initMesh(model); 
+
+}
+
+void            Sprite::initMesh(const IndexedModel& model)
+{
+    drawCount = model.indices.size();
 
     glGenVertexArrays(1, &vaoID);
     glBindVertexArray(vaoID);
 
-    std::vector<glm::vec3> positions;
-    std::vector<glm::vec2> texCoords;
-
-    positions.reserve(numVertices);
-    texCoords.reserve(numVertices);
-
-    for (unsigned int i = 0; i < numVertices; i++) {
-        positions.push_back(*vertices[i].getPos());
-        texCoords.push_back(*vertices[i].getTex());
-    }
-
-    //position buffer
     glGenBuffers(NUM_BUFFERS, vboID);
     glBindBuffer(GL_ARRAY_BUFFER, vboID[POSITION_VB]);
-    glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(positions[0]), &positions[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_STATIC_DRAW);
 
  
     glEnableVertexAttribArray(0);
@@ -43,7 +55,10 @@ Sprite::Sprite(Vertex *vertices, unsigned int numVertices)
     //texture buffer
     glGenBuffers(NUM_BUFFERS, vboID);
     glBindBuffer(GL_ARRAY_BUFFER, vboID[TEXCOORD_VB]);
-    glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(texCoords[0]), &texCoords[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.texCoords[0], GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID[INDEX_VB]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_STATIC_DRAW);
 
  
     glEnableVertexAttribArray(1);
@@ -56,6 +71,7 @@ Sprite::Sprite(Vertex *vertices, unsigned int numVertices)
 void    Sprite::draw()
 {
     glBindVertexArray(vaoID);
-    glDrawArrays(GL_TRIANGLES, 0, drawCount);
+    glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);
+    //glDrawArrays(GL_TRIANGLES, 0, drawCount);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

@@ -40,8 +40,11 @@ void    MainGame::initSystems()
     glfwMakeContextCurrent(window);
     handleContext();
 
-    glClearColor(0.5f, 0.7f, 0.0f, 1.0f);
-    camera.initCamera(glm::vec3(0.0, 0.0, -2.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    
 
     initShaders();
 }
@@ -107,7 +110,7 @@ void        MainGame::gameLoop()
         //std::cout << "counter is " << counter << std::endl;
         drawGame();
         processInput();
-        counter += 0.001f;
+        counter += 0.1f;
     }
 }
 
@@ -117,6 +120,7 @@ void MainGame::handleContext()
     GLenum error = glewInit();
     if (GLEW_OK != error)
         std::cout << glewGetErrorString(error) << std::endl;
+
 }
 
 void MainGame::drawGame()
@@ -124,21 +128,19 @@ void MainGame::drawGame()
     glClearDepth(1.0);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f);
 
     float sinCounter = sinf(counter);
     float cosCounter = cosf(counter);
     
     Transform   transform;
-    transform.getPos().x = sinCounter;
-    transform.getPos().z = cosCounter;
-    transform.getRot().x = counter * 50;
-    transform.getRot().y = counter * 50;
-    transform.getRot().z = counter * 50;
+    transform.getRot().y = counter / 10;
+    transform.getRot().x = sinCounter;
 
     colorProgram.use();
 
     GLuint transformUniform = colorProgram.getUniformLocation("transform");
-    Texture texture("assets/cat.jpg");
+    Texture texture("assets/bricks.jpg");
     
     colorProgram.update(transform, camera);
     

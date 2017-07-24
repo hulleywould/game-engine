@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo apt-get install cmake libglew-dev 
+brew install cmake && brew install glfw3 && brew install glm && brew install glew && brew install elixir

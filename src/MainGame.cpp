@@ -34,6 +34,11 @@ void    MainGame::initSystems()
     ** then Buffer B is written to while Buffer A clears.
     ** This reduces flicker
     */
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     glfwWindowHint(GLFW_DOUBLEBUFFER, 1);
 
     createWindow(screenWidth, screenHeight);

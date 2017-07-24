@@ -18,6 +18,6 @@ void    HandleMeshData::handleMesh()
     unsigned int indices[] = { 0, 1, 2 };
 
     Sprite sprite(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
-    Sprite sprite2("assets/monkeyNoUV.obj");
+    Sprite sprite2("assets/monkey3.obj");
     sprite2.draw();
 }

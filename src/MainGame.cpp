@@ -46,9 +46,12 @@ void    MainGame::initSystems()
     handleContext();
 
     glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
+    glCullFace(GL_BACK);
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
     
 
     initShaders();
@@ -67,6 +70,7 @@ int     MainGame::initGL()
 {
     if (!glfwInit())
         return -1;  
+    return 0;
 }
 
 int     MainGame::createWindow(int width, int height)

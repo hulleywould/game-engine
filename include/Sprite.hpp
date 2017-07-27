@@ -17,18 +17,20 @@ class Sprite {
         Sprite(const std::string &fileName);
         ~Sprite(void);
         void    draw();
+        unsigned int    drawCount;
 
     private:
         enum {
             POSITION_VB,
             TEXCOORD_VB,
             INDEX_VB,
+            NORMAL_VB,
             NUM_BUFFERS
         };
         void            initMesh(const IndexedModel& model);
         GLuint          vaoID; //vertex array object ID.
         GLuint          vboID[POSITION_VB]; //vertext buffer object ID. GLuint guaranteed to be 32bits
-        unsigned int    drawCount;
+        
         
 };
 

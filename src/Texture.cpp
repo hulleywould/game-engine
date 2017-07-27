@@ -7,13 +7,14 @@ Texture::Texture(const std::string &fileName)
 {
     int width, height, numComponents;
     
-    unsigned char *imageData = stbi_load(fileName.c_str(), &width, &height, &numComponents, 4);
+    unsigned char *imageData = stbi_load(fileName.c_str(), &width, &height, &numComponents, STBI_rgb_alpha);
 
     if (imageData == NULL)
         std::cerr << "loading texture " << fileName << " failed." << std::endl;
 
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
+    std::cout << "texture id is: " << textureID << std::endl;
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -32,10 +33,7 @@ Texture::~Texture(void)
     glDeleteTextures(1, &textureID);
 }
 
-void    Texture::useTexture(unsigned int unit)
+void    Texture::useTexture()
 {
-    assert(unit >= 0 && unit <= 31);
-
-    glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, textureID);
 }

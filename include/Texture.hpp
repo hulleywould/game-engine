@@ -13,7 +13,7 @@ class Texture {
         Texture(const std::string &fileName);
         ~Texture(void);
 
-        void useTexture(unsigned int unit);
+        void useTexture();
     private:
         GLuint  textureID;
 

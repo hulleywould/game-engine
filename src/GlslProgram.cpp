@@ -4,7 +4,7 @@ GlslProgram::GlslProgram(void) :
 programID(0),
 vertexShaderID(0),
 fragmentShaderID(0),
-numAttributes(0)
+numAttributes(-1)
 {
 
 }
@@ -109,6 +109,7 @@ void    GlslProgram::update(const Transform &transform, const Camera &camera)
 void    GlslProgram::addAttribute(const std::string attributeName)
 {
     glBindAttribLocation(programID, numAttributes++, attributeName.c_str());
+    std::cout << attributeName << " is location: " << numAttributes << std::endl;
 }
 
 void    GlslProgram::compileShader(const std::string filepath, GLuint id)

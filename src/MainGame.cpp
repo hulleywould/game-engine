@@ -8,8 +8,7 @@ MainGame::MainGame(void) :
     gameState(GameState::PLAY),
     time(0.0f),
     counter(0.0f),
-    camera(),
-    meshData()
+    camera()
 {
 
 }    

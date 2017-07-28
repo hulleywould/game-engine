@@ -10,7 +10,6 @@
 #include "Texture.hpp"
 #include "GlslProgram.hpp"
 #include "Camera.hpp"
-#include "HandleMeshData.hpp"
 
 
 enum class GameState {PLAY, EXIT};
@@ -47,7 +46,6 @@ class MainGame {
         float       time;
         float       counter;
         Camera      camera;
-        HandleMeshData meshData;
 };
 
 #endif

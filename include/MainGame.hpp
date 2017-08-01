@@ -9,6 +9,7 @@
 #include "Sprite.hpp"
 #include "Texture.hpp"
 #include "GlslProgram.hpp"
+#include "Shader.hpp"
 #include "Camera.hpp"
 
 
@@ -36,7 +37,6 @@ class MainGame {
 
     private:
         void        processInput();
-        void        initShaders();
         void        gameLoop();
         void        initSystems();
         GLFWwindow  *window;
@@ -44,10 +44,10 @@ class MainGame {
         int         screenHeight;
         GameState   gameState;
         void        handleContext();
-        GlslProgram colorProgram;
         float       time;
         float       counter;
         Camera      camera;
+        Shader      shader;
 };
 
 #endif

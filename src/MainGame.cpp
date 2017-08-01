@@ -52,16 +52,7 @@ void    MainGame::initSystems()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
 
-    initShaders();
-}
-
-void    MainGame::initShaders()
-{
-    colorProgram.compileShaders("src/shaders/colorShading.vert", "src/shaders/colorShading.frag");
-    colorProgram.addAttribute("position");
-    colorProgram.addAttribute("texCoord");
-    colorProgram.addAttribute("normal");
-    colorProgram.linkShaders();
+    shader.initializeShader();
 }
 
 /* initialize GLFW*/
@@ -143,11 +134,8 @@ void        MainGame::gameLoop()
 {
     camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f);
     Transform   transform;
-    
-    Texture texture("assets/wood.jpg");
-
+    Texture     texture("assets/wood.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0));
-
     Sprite sprite2("assets/monkey3.obj");
     camY = 0.0f;
     camX = 0.0f;
@@ -155,8 +143,6 @@ void        MainGame::gameLoop()
     while (gameState != GameState::EXIT)
     {
         glClearDepth(1.0);
-        GLuint transformUniform = colorProgram.getUniformLocation("transform");
-        GLuint colorUniform = colorProgram.getUniformLocation("color");
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
@@ -166,14 +152,13 @@ void        MainGame::gameLoop()
         transform.getRot().y = counter / 10;
 
         material.getColor() = glm::vec3(0.6, 0.3, 0.0);
+        shader.use();
 
-        colorProgram.use();
-
-        colorProgram.update(transform, camera, material);
+        shader.update(transform, camera, material);
         
         sprite2.draw();
         
-        colorProgram.unuse();
+        shader.unuse();
 
         glfwSwapBuffers(window);
 

@@ -34,6 +34,7 @@ class GlslProgram {
         GLuint  vertexShaderID;
         GLuint  fragmentShaderID;
         int     numAttributes;
+    protected:
         void    compileShader(const std::string filepath, GLuint id);
 
 };

@@ -99,11 +99,13 @@ void    GlslProgram::unuse()
     }
 }
 
-void    GlslProgram::update(const Transform &transform, const Camera &camera)
+void    GlslProgram::update(const Transform &transform, const Camera &camera, Material &material)
 {
     glm::mat4 modelViewProjection = camera.getViewProjection() * transform.getModel();
+    glm::vec3 color = material.getColor();
     //set GL_FALSE to GL_TRUE if matrix must be transposed
     glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &modelViewProjection[0][0]);
+    glUniform3f(uniforms[NUM_UNIFORMS], color[0], color[1], color[2]);
 }
 
 void    GlslProgram::addAttribute(const std::string attributeName)

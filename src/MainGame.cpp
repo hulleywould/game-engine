@@ -93,25 +93,11 @@ void        MainGame::processInput()
     }
     else {
         glfwPollEvents();
-        /*turned key_callback into a lambda function
-        **the processInput function is now in one place
-        **minimizing the extra function call.
-        */
-        /*glfwSetKeyCallback(window, [](GLFWwindow *win, int key, int scancodes, int action, int modes) {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-            {
-                glfwTerminate();
-                exit(0);
-            }
-            else if(key == GLFW_KEY_UP && action == GLFW_PRESS) {
-                
-            }
-        });*/
         auto EscKey = glfwGetKey(window, GLFW_KEY_ESCAPE);
-        auto W = glfwGetKey(window, GLFW_KEY_W);
-        auto S = glfwGetKey(window, GLFW_KEY_S);
-        auto A = glfwGetKey(window, GLFW_KEY_A);
-        auto D = glfwGetKey(window, GLFW_KEY_D);
+        auto camUp = glfwGetKey(window, GLFW_KEY_W);
+        auto camDown = glfwGetKey(window, GLFW_KEY_S);
+        auto camLeft = glfwGetKey(window, GLFW_KEY_A);
+        auto camRight = glfwGetKey(window, GLFW_KEY_D);
         auto zoomIn = glfwGetKey(window, GLFW_KEY_Q);
         auto zoomOut = glfwGetKey(window, GLFW_KEY_E);
         if (EscKey == GLFW_PRESS)
@@ -119,22 +105,22 @@ void        MainGame::processInput()
             glfwTerminate();
                 exit(0);
         }
-        else if (W == GLFW_PRESS)
+        else if (camUp == GLFW_PRESS)
         {
             camY += 0.01f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
-        else if (S == GLFW_PRESS)
+        else if (camDown == GLFW_PRESS)
         {
             camY -= 0.01f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
-        else if (A == GLFW_PRESS)
+        else if (camLeft == GLFW_PRESS)
         {
             camX -= 0.01f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
-        else if (D == GLFW_PRESS)
+        else if (camRight == GLFW_PRESS)
         {
             camX += 0.01f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
@@ -156,38 +142,34 @@ void        MainGame::processInput()
 void        MainGame::gameLoop() 
 {
     camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f);
-    /*Vertex vertices[] = {   Vertex(glm::vec3(-0.5, -0.5, 0.0), glm::vec2(2.0, 0.0)),
-                        Vertex(glm::vec3(0.0, 0.5, 0.0), glm::vec2(0.0, -2.0)),
-                        Vertex(glm::vec3(0.5, -0.5, 0.0), glm::vec2(-0.5, 0.0)) };
-    unsigned int indices[] = { 0, 1, 2 };*/
-       
     Transform   transform;
+    
     Texture texture("assets/wood.jpg");
 
-    //Sprite sprite(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+    Material    material(texture, glm::vec3(0.0, 0.0, 0.0));
+
     Sprite sprite2("assets/monkey3.obj");
     camY = 0.0f;
     camX = 0.0f;
     camZ = -3.0f;
     while (gameState != GameState::EXIT)
     {
-    
         glClearDepth(1.0);
         GLuint transformUniform = colorProgram.getUniformLocation("transform");
+        GLuint colorUniform = colorProgram.getUniformLocation("color");
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-
         float sinCounter = sinf(counter);
         float cosCounter = cosf(counter);
         
-        
         transform.getRot().y = counter / 10;
-        //transform.getRot().x = sinCounter;
+
+        material.getColor() = glm::vec3(0.6, 0.3, 0.0);
 
         colorProgram.use();
 
-        colorProgram.update(transform, camera);
+        colorProgram.update(transform, camera, material);
         
         sprite2.draw();
         

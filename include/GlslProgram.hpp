@@ -8,6 +8,7 @@
 #include <vector>
 #include "Transform.hpp"
 #include "Camera.hpp"
+#include "Material.hpp"
 
 class GlslProgram {
     public:
@@ -20,7 +21,7 @@ class GlslProgram {
         void    addAttribute(const std::string attributeName);
         void    use();
         void    unuse();
-        void    update(const Transform &transform, const Camera &camera);
+        void    update(const Transform &transform, const Camera &camera, Material &material);
         GLuint  getUniformLocation(const std::string &uniformName);
 
     private:

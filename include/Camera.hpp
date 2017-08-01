@@ -22,6 +22,7 @@ class Camera {
         void        setCameraPos(const glm::vec3& pos);
         void        setCameraForward(const glm::vec3&);
         void        setCameraUp(const glm::vec3&);
+        void        camUpdate(const glm::vec3 &pos);
 
     private:
         

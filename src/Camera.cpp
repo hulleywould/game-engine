@@ -21,6 +21,11 @@ void    Camera::initCamera(const glm::vec3 &pos, float fov, float aspect, float 
     up = glm::vec3(0.0, 1.0, 0.0);
 }
 
+void    Camera::camUpdate(const glm::vec3 &pos)
+{
+    cameraPos = pos;
+}
+
 glm::mat4 Camera::getViewProjection() const
 {
     return perspective * glm::lookAt(cameraPos, cameraPos + forward, up);

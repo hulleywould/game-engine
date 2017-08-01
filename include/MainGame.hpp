@@ -30,6 +30,9 @@ class MainGame {
 
         void        setWidth(const int &w);
         void        setHeight(const int &h);
+        float       camY;
+        float       camX;
+        float       camZ;
 
     private:
         void        processInput();
@@ -41,7 +44,6 @@ class MainGame {
         int         screenHeight;
         GameState   gameState;
         void        handleContext();
-        void        drawGame();
         GlslProgram colorProgram;
         float       time;
         float       counter;

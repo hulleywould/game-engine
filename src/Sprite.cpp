@@ -2,8 +2,6 @@
 
 Sprite::Sprite(void)
 {
-    //vaoID = 0;
-
 }
 
 Sprite::Sprite(const std::string &fileName)
@@ -74,6 +72,5 @@ void    Sprite::draw()
 {
     glBindVertexArray(vaoID);
     glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);
-    //glDrawArrays(GL_TRIANGLES, 0, drawCount);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

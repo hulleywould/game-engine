@@ -14,4 +14,3 @@ void    main() {
     texCoord0 = texCoord;
     normal0 = (transform * vec4(normal, 0.0)).xyz;
 }
-

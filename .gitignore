@@ -37,3 +37,15 @@ Makefile
 *.out
 *.app
 bomberman
+
+#Extra Files
+._.DS_Store
+.DS_Store
+*.dSYM
+*.swp
+*.swo
+.vs
+.sln
+.vcxproj
+build
+.idea

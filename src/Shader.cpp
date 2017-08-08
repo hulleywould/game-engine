@@ -18,8 +18,8 @@ void    Shader::initializeShader()
     addAttribute("normal");
     linkShaders();
 
-    getUniformLocation("transform");
-    getUniformLocation("color");
+    addUniform("transform");
+    addUniform("color");
 }
 
 void    Shader::updateShader(const Transform &transform, const Camera &camera, Material &material)

@@ -2,6 +2,7 @@
 # define GLSLPROGRAM_HPP
 
 #include <string>
+#include <map>
 #include <iostream>
 #include <GL/glew.h>
 #include <fstream>
@@ -22,7 +23,9 @@ class GlslProgram {
         void    use();
         void    unuse();
         void    update(const Transform &transform, const Camera &camera, Material &material);
-        GLuint  getUniformLocation(const std::string &uniformName);
+        //GLuint  getUniformLocation(const std::string &uniformName);
+        void    addUniform(const std::string &uniformName);
+        std::map<std::string, int> uniformMap;
 
     private:
         enum {

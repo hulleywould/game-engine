@@ -71,7 +71,7 @@ void    GlslProgram::linkShaders()
     glDeleteShader(fragmentShaderID);
 }
 
-GLuint  GlslProgram::getUniformLocation(const std::string &uniformName)
+/*GLuint  GlslProgram::getUniformLocation(const std::string &uniformName)
 {
     GLuint location = glGetUniformLocation(programID, uniformName.c_str());
     if (location == GL_INVALID_INDEX)
@@ -81,6 +81,20 @@ GLuint  GlslProgram::getUniformLocation(const std::string &uniformName)
         exit(0);
     }
     return location;
+}*/
+
+//new add Uniform
+
+void    GlslProgram::addUniform(const std::string &uniformName)
+{
+    GLuint location = glGetUniformLocation(programID, uniformName.c_str());
+    if (location == GL_INVALID_INDEX)
+    {
+        std::cout << "UniformName: " << uniformName <<
+         " not found in shader." << std::endl;
+        exit(0);
+    }
+    uniformMap[uniformName] = location;
 }
 
 void    GlslProgram::use()
@@ -113,6 +127,8 @@ void    GlslProgram::addAttribute(const std::string attributeName)
     glBindAttribLocation(programID, numAttributes++, attributeName.c_str());
     std::cout << attributeName << " is location: " << numAttributes << std::endl;
 }
+
+
 
 void    GlslProgram::compileShader(const std::string filepath, GLuint id)
 {

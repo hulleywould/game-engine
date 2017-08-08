@@ -11,6 +11,7 @@
 #include "GlslProgram.hpp"
 #include "Shader.hpp"
 #include "Camera.hpp"
+#include "PhongShader.hpp"
 
 
 enum class GameState {PLAY, EXIT};
@@ -47,7 +48,7 @@ class MainGame {
         float       time;
         float       counter;
         Camera      camera;
-        Shader      shader;
+        PhongShader      shader;
         
 };
 

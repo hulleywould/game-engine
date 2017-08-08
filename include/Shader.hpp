@@ -12,7 +12,7 @@ class Shader: public GlslProgram {
         ~Shader(void);
 
         void    initializeShader();
-        void    updateShader(const Transform &transform, const Camera &camera, Material &material);
+        void    update(const Transform &transform, const Camera &camera, Material &material);
 };
 
 #endif

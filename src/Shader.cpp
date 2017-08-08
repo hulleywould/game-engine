@@ -22,7 +22,9 @@ void    Shader::initializeShader()
     addUniform("color");
 }
 
-void    Shader::updateShader(const Transform &transform, const Camera &camera, Material &material)
+void    Shader::update(const Transform &transform, const Camera &camera, Material &material)
 {
-    update(transform, camera, material);
+    glm::mat4 modelViewProjection = camera.getViewProjection() * transform.getModel();
+    setUniform("transform", modelViewProjection);
+    setUniform("color", material.getColor());
 }

@@ -97,6 +97,27 @@ void    GlslProgram::addUniform(const std::string &uniformName)
     uniformMap[uniformName] = location;
 }
 
+void    GlslProgram::setUniformi(const std::string &uniformName, int value)
+{
+    if (uniformMap.find(uniformName) != uniformMap.end())
+        glUniform1i(uniformMap.find(uniformName)->second, value);
+}
+
+void    GlslProgram::setUniformf(const std::string &uniformName, float value)
+{
+    glUniform1f(uniformMap.find(uniformName)->second, value);
+}
+
+void    GlslProgram::setUniform(const std::string &uniformName, glm::vec3 value)
+{
+    glUniform3f(uniformMap.find(uniformName)->second, value[0], value[1], value[2]);
+}
+
+void    GlslProgram::setUniform(const std::string &uniformName, glm::mat4 value)
+{
+    glUniformMatrix4fv(uniformMap.find(uniformName)->second, 1, GL_FALSE, &value[0][0]);
+}
+
 void    GlslProgram::use()
 {
     glUseProgram(programID);
@@ -116,10 +137,9 @@ void    GlslProgram::unuse()
 void    GlslProgram::update(const Transform &transform, const Camera &camera, Material &material)
 {
     glm::mat4 modelViewProjection = camera.getViewProjection() * transform.getModel();
-    glm::vec3 color = material.getColor();
-    //set GL_FALSE to GL_TRUE if matrix must be transposed
-    glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &modelViewProjection[0][0]);
-    glUniform3f(uniforms[NUM_UNIFORMS], color[0], color[1], color[2]);
+    setUniform("transform", modelViewProjection);
+    setUniform("color", material.getColor());
+    
 }
 
 void    GlslProgram::addAttribute(const std::string attributeName)

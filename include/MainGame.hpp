@@ -48,6 +48,7 @@ class MainGame {
         float       counter;
         Camera      camera;
         Shader      shader;
+        
 };
 
 #endif

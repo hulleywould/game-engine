@@ -134,6 +134,7 @@ void        MainGame::gameLoop()
 {
     camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f);
     Transform   transform;
+    transform.getRot().y = 3.0f;
     Texture     texture("assets/wood.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0));
     Sprite sprite2("assets/monkey3.obj");
@@ -149,7 +150,7 @@ void        MainGame::gameLoop()
         float sinCounter = sinf(counter);
         float cosCounter = cosf(counter);
         
-        transform.getRot().y = counter / 10;
+        transform.getPos().y = sinCounter / 10;
 
         material.getColor() = glm::vec3(0.6, 0.3, 0.0);
         shader.use();

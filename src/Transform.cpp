@@ -10,7 +10,8 @@ Transform::Transform(void)
 Transform::Transform(const glm::vec3 &pos, const glm::vec3 &rot, const glm::vec3 &scaling) :
 position(pos),
 rotation(rot),
-scale(scaling)
+scale(scaling),
+translation(glm::vec3(0,0,0))
 {
 
 }
@@ -27,7 +28,6 @@ glm::mat4   Transform::getModel() const
     glm::mat4 rotMatrix = rotzMatrix * rotyMatrix * rotxMatrix; 
     return posMatrix * rotMatrix * scaleMatrix;
 }
-
 
 Transform::~Transform(void)
 {
@@ -64,5 +64,15 @@ void        Transform::setRot(const glm::vec3 &rot)
 void        Transform::setScale(const glm::vec3 &scaling)
 {
     scale = scaling;
+}
+
+glm::vec3&  Transform::getTranslation()
+{
+    return translation;
+}
+
+void        Transform::setTranslation(float x, float y, float z)
+{
+    translation = glm::vec3(x,y,z);
 }
 

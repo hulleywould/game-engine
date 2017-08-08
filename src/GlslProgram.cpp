@@ -71,20 +71,6 @@ void    GlslProgram::linkShaders()
     glDeleteShader(fragmentShaderID);
 }
 
-/*GLuint  GlslProgram::getUniformLocation(const std::string &uniformName)
-{
-    GLuint location = glGetUniformLocation(programID, uniformName.c_str());
-    if (location == GL_INVALID_INDEX)
-    {
-        std::cout << "UniformName: " << uniformName <<
-         " not found in shader." << std::endl;
-        exit(0);
-    }
-    return location;
-}*/
-
-//new add Uniform
-
 void    GlslProgram::addUniform(const std::string &uniformName)
 {
     GLuint location = glGetUniformLocation(programID, uniformName.c_str());
@@ -99,8 +85,7 @@ void    GlslProgram::addUniform(const std::string &uniformName)
 
 void    GlslProgram::setUniformi(const std::string &uniformName, int value)
 {
-    if (uniformMap.find(uniformName) != uniformMap.end())
-        glUniform1i(uniformMap.find(uniformName)->second, value);
+    glUniform1i(uniformMap.find(uniformName)->second, value);
 }
 
 void    GlslProgram::setUniformf(const std::string &uniformName, float value)
@@ -139,7 +124,6 @@ void    GlslProgram::update(const Transform &transform, const Camera &camera, Ma
     glm::mat4 modelViewProjection = camera.getViewProjection() * transform.getModel();
     setUniform("transform", modelViewProjection);
     setUniform("color", material.getColor());
-    
 }
 
 void    GlslProgram::addAttribute(const std::string attributeName)

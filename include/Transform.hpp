@@ -13,20 +13,22 @@ class Transform {
         ~Transform(void);
         glm::mat4   getModel() const;
 
-
         //getters and setters
         glm::vec3   &getPos();
         glm::vec3   &getRot();
         glm::vec3   &getScale();
+        glm::vec3   &getTranslation();
 
         void        setPos(const glm::vec3 &pos);
         void        setRot(const glm::vec3 &rot);
         void        setScale(const glm::vec3 &scaling);
-
+        void        setTranslation(float x, float y, float z);
+        
     private: 
         glm::vec3   position;
         glm::vec3   rotation;
         glm::vec3   scale;
+        glm::vec3   translation;
 
 };
 

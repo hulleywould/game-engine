@@ -5,10 +5,11 @@ PointLight::PointLight()
 
 }
 
-PointLight::PointLight(BaseLight b, Attenuation at, glm::vec3 pos):
+PointLight::PointLight(BaseLight b, Attenuation at, glm::vec3 pos, float rang):
 base(b),
 atten(at),
-position(pos)
+position(pos),
+range(rang)
 {
 
 }
@@ -33,6 +34,12 @@ void        PointLight::setPosition(const glm::vec3 &pos)
     position = pos;
 }
 
+void        PointLight::setRange(const float &rang)
+{
+    range = rang;
+}
+
+
 BaseLight&  PointLight::getBase()
 {
     return base;
@@ -46,4 +53,9 @@ Attenuation&  PointLight::getAttenuation()
 glm::vec3&  PointLight::getPosition()
 {
     return position;
+}
+
+float&  PointLight::getRange()
+{
+    return range;
 }

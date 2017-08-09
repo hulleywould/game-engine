@@ -122,6 +122,8 @@ void    GlslProgram::setUniform(const std::string &uniformName, PointLight point
     setUniformf(uniformName + ".atten.linear", pointLight.getAttenuation().getLinear());
     setUniformf(uniformName + ".atten.exponent", pointLight.getAttenuation().getExponent());
     setUniform(uniformName + ".position", pointLight.getPosition());
+    setUniformf(uniformName + ".range", pointLight.getRange());
+    
 }
 
 void    GlslProgram::use()

@@ -37,6 +37,8 @@ void    PhongShader::initializeShader()
         addUniform("pointLights[" + std::to_string(i) + "].atten.linear");
         addUniform("pointLights[" + std::to_string(i) + "].atten.exponent");
         addUniform("pointLights[" + std::to_string(i) + "].position");
+        addUniform("pointLights[" + std::to_string(i) + "].range");
+        
     }
 }
 

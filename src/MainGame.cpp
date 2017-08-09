@@ -9,8 +9,8 @@ MainGame::MainGame(void) :
     time(0.0f),
     counter(0.0f),
     camera(),
-    pLight1(BaseLight(glm::vec3(1.0f, 0.0f, 0.0f), 10.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(-1.0f, 3.0f, 5.0f)),
-    pLight2(BaseLight(glm::vec3(0.0f, 1.0f, 0.5f), 10.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 3.0f, 4.0f))
+    pLight1(BaseLight(glm::vec3(1.0f, 0.0f, 0.0f), 500.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(-5.0f, 0.0f, 1.0f), 30.0f),
+    pLight2(BaseLight(glm::vec3(0.0f, 1.0f, 0.0f), 500.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(5.0f, 0.0f, 2.0f), 30.0f)
     
 {
     
@@ -109,32 +109,32 @@ void    MainGame::processInput()
         }
         else if (camUp == GLFW_PRESS)
         {
-            camY += 0.01f;
+            camY -= 1.0f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (camDown == GLFW_PRESS)
         {
-            camY -= 0.01f;
+            camY += 1.0f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (camLeft == GLFW_PRESS)
         {
-            camX -= 0.01f;
+            camX -= 1.0f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (camRight == GLFW_PRESS)
         {
-            camX += 0.01f;
+            camX += 1.0f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (zoomIn == GLFW_PRESS)
         {
-            camZ += 0.01f;
+            camZ += 1.0f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (zoomOut == GLFW_PRESS)
         {
-            camZ -= 0.01f;
+            camZ -= 1.00f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
 
@@ -150,20 +150,25 @@ void        MainGame::gameLoop()
     
     //directional light
     DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
-    shader.setDirectionalLight(light);
+    //shader.setDirectionalLight(light);
 
-    //point light things
+    //point light thing
     std::vector<PointLight> pLightArray;
     pLightArray.push_back(pLight1);
     pLightArray.push_back(pLight2);
     shader.setPointLight(pLightArray);
     
+    
+    
     camY = 0.0f;
     camX = 0.0f;
-    camZ = -3.0f;
+    camZ = -30.0f;
     camera.initCamera(glm::vec3(camX, camY, camZ), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f); 
     shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
     transform.getRot().y = 3.15f;
+    transform.getScale().x = 10.0f;
+    transform.getScale().y = 10.0f;
+    transform.getScale().z = 10.0f;
 
     while (gameState != GameState::EXIT)
     {
@@ -174,16 +179,13 @@ void        MainGame::gameLoop()
         float sinCounter = sinf(counter);
         float cosCounter = cosf(counter);
         
-        //transform.getPos().y = sinCounter / 10;
+        transform.getPos().y = sinCounter / 10;
         //transform.getRot().y = counter / 10;
-        pLight1.setPosition(glm::vec3(sinCounter, 8.0f, sinCounter / 10));
-        pLight2.setPosition(glm::vec3(cosCounter, 8.0f, cosCounter / 10));
-        shader.setPointLight(pLightArray);
-
-
         material.getColor() = glm::vec3(0.6, 0.3, 0.0);
+        
         shader.use();
-
+        
+    
         shader.update(transform, camera, material);
 
         sprite2.draw();

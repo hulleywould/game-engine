@@ -7,7 +7,7 @@ DirectionalLight::DirectionalLight()
 
 DirectionalLight::DirectionalLight(BaseLight b, glm::vec3 dir):
 base(b),
-direction(dir)
+direction(glm::normalize(dir))
 {
 
 }

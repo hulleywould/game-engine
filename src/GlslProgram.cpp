@@ -103,6 +103,18 @@ void    GlslProgram::setUniform(const std::string &uniformName, glm::mat4 value)
     glUniformMatrix4fv(uniformMap.find(uniformName)->second, 1, GL_FALSE, &value[0][0]);
 }
 
+void    GlslProgram::setUniform(const std::string &uniformName, BaseLight baselight)
+{
+    setUniform(uniformName + ".color", baselight.getColor());
+    setUniformf(uniformName + ".intensity", baselight.getIntensity());
+}
+
+void    GlslProgram::setUniform(const std::string &uniformName, DirectionalLight directionalLight)
+{
+    setUniform(uniformName + ".base", directionalLight.getBase());
+    setUniform(uniformName + ".direction", directionalLight.getDirection());
+}
+
 void    GlslProgram::use()
 {
     glUseProgram(programID);

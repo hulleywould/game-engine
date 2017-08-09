@@ -5,6 +5,8 @@
 #include "Transform.hpp"
 #include "Material.hpp"
 #include "GlslProgram.hpp"
+#include "DirectionalLight.hpp"
+#include "BaseLight.hpp"
 
 class PhongShader: public GlslProgram {
     public:
@@ -15,10 +17,15 @@ class PhongShader: public GlslProgram {
         void    update(const Transform &transform, const Camera &camera, Material &material);
         
         void    setAmbientLight(const glm::vec3 &ambience);
-        glm::vec3& getAmbientLight();
+        void    setDirectionalLight(const DirectionalLight &dir);
+
+        glm::vec3&          getAmbientLight();
+        DirectionalLight&   getDirectionalLight();
 
     private:
-        glm::vec3 ambientLight;
+        glm::vec3           ambientLight;
+        DirectionalLight    directionalLight;
+        BaseLight           baseLight; 
 };
 
 #endif

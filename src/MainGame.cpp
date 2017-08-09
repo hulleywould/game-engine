@@ -132,7 +132,9 @@ void        MainGame::processInput()
 
 void        MainGame::gameLoop() 
 {
-    Transform   transform;
+    Transform           transform;
+    DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 2.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    shader.setDirectionalLight(light);
     Texture     texture("assets/wood.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0));
     Sprite sprite2("assets/monkey3.obj");
@@ -141,6 +143,7 @@ void        MainGame::gameLoop()
     camZ = -3.0f;
     camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f); 
     shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
+    
     transform.getRot().y = 3.0f;
     while (gameState != GameState::EXIT)
     {
@@ -152,6 +155,8 @@ void        MainGame::gameLoop()
         float cosCounter = cosf(counter);
         
         transform.getPos().y = sinCounter / 10;
+        transform.getPos().z = sinCounter / 10;
+        shader.getDirectionalLight();
 
         material.getColor() = glm::vec3(0.6, 0.3, 0.0);
         shader.use();

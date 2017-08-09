@@ -11,7 +11,7 @@ MainGame::MainGame(void) :
     camera()
 {
 
-}    
+}
 
 MainGame::~MainGame(void)
 {
@@ -35,8 +35,11 @@ void    MainGame::initSystems()
     */
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    #ifdef __APPLE__
+      glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+      glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    #endif
 
     glfwWindowHint(GLFW_DOUBLEBUFFER, 1);
 
@@ -46,8 +49,12 @@ void    MainGame::initSystems()
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-    
+
     glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+
+    // get version info
+    std::cout << "Renderer:" << glGetString(GL_RENDERER) << '\n';
+    std::cout << "OpenGL version supported " << glGetString(GL_VERSION) << "\n\n";
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -56,27 +63,26 @@ void    MainGame::initSystems()
 }
 
 /* initialize GLFW*/
-int     MainGame::initGL()
+void   MainGame::initGL()
 {
-    if (!glfwInit())
-        return -1;  
-    return 0;
+    if (!glfwInit()) {
+      std::cout << "ERROR: could not start GLFW3\n";
+      exit(0);
+    }
 }
 
-int     MainGame::createWindow(int width, int height)
+void   MainGame::createWindow(int width, int height)
 {
     window = glfwCreateWindow(getWidth(), getHeight(), "GameEngine", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
-        return -1;
+        std::cout << "ERROR: could not open window with GLFW3\n";
+        exit(0);
     }
-    
-    
-    return (0);
 }
 
-void        MainGame::processInput()
+void    MainGame::processInput()
 {
     if (glfwWindowShouldClose(window)) {
         glfwTerminate();
@@ -127,10 +133,10 @@ void        MainGame::processInput()
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
 
-    } 
+    }
 }
 
-void        MainGame::gameLoop() 
+void        MainGame::gameLoop()
 {
     Transform           transform;
     DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 2.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -148,9 +154,9 @@ void        MainGame::gameLoop()
     while (gameState != GameState::EXIT)
     {
         glClearDepth(1.0);
-        
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
+
         float sinCounter = sinf(counter);
         float cosCounter = cosf(counter);
         
@@ -162,9 +168,9 @@ void        MainGame::gameLoop()
         shader.use();
 
         shader.update(transform, camera, material);
-        
+
         sprite2.draw();
-        
+
         shader.unuse();
 
         glfwSwapBuffers(window);
@@ -203,4 +209,3 @@ void        MainGame::setHeight(const int &h)
 {
     screenHeight = h;
 }
-

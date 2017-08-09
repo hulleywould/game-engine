@@ -22,9 +22,9 @@ class MainGame {
         ~MainGame(void);
 
         void    run();
-        
-        int     initGL();
-        int     createWindow(int width, int height);
+
+        void     initGL();
+        void     createWindow(int width, int height);
 
         //getters and setters
         int         &getWidth();

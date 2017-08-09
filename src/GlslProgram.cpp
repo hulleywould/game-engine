@@ -115,6 +115,15 @@ void    GlslProgram::setUniform(const std::string &uniformName, DirectionalLight
     setUniform(uniformName + ".direction", directionalLight.getDirection());
 }
 
+void    GlslProgram::setUniform(const std::string &uniformName, PointLight pointLight)
+{
+    setUniform(uniformName + ".base", pointLight.getBase());
+    setUniformf(uniformName + ".atten.constant", pointLight.getAttenuation().getConstant());
+    setUniformf(uniformName + ".atten.linear", pointLight.getAttenuation().getLinear());
+    setUniformf(uniformName + ".atten.exponent", pointLight.getAttenuation().getExponent());
+    setUniform(uniformName + ".position", pointLight.getPosition());
+}
+
 void    GlslProgram::use()
 {
     glUseProgram(programID);

@@ -12,6 +12,7 @@
 #include "Material.hpp"
 #include "DirectionalLight.hpp"
 #include "BaseLight.hpp"
+#include "PointLight.hpp"
 
 class GlslProgram {
     public:
@@ -30,8 +31,10 @@ class GlslProgram {
         void    setUniformf(const std::string &uniformName, float value);
         void    setUniform(const std::string &uniformName, glm::vec3 value);
         void    setUniform(const std::string &uniformName, glm::mat4 value);
+        void    setUniform(const std::string &uniformName, PointLight pointlight);
         void    setUniform(const std::string &uniformName, DirectionalLight directionalLight);
         void    setUniform(const std::string &uniformName, BaseLight baselight);
+        
         std::map<std::string, int> uniformMap;
 
     private:

@@ -28,7 +28,16 @@ void    PhongShader::initializeShader()
     addUniform("specularIntensity");
     addUniform("specularPower");
     addUniform("eyePos");
-    
+    for (int i = 0; i < MAX_POINT_LIGHT; i++)
+    {
+        addUniform("pointLights[" + std::to_string(i) + "].base.color");
+        addUniform("pointLights[" + std::to_string(i) + "].base.intensity");
+        addUniform("pointLights[" + std::to_string(i) + "].atten.constant");
+        addUniform("pointLights[" + std::to_string(i) + "].atten.constant");
+        addUniform("pointLights[" + std::to_string(i) + "].atten.linear");
+        addUniform("pointLights[" + std::to_string(i) + "].atten.exponent");
+        addUniform("pointLights[" + std::to_string(i) + "].position");
+    }
 }
 
 void    PhongShader::update(const Transform &transform, Camera &camera, Material &material)
@@ -41,6 +50,10 @@ void    PhongShader::update(const Transform &transform, Camera &camera, Material
     setUniform("eyePos", camera.getCameraPos());
     setUniform("ambientLight", ambientLight);
     setUniform("directionalLight", directionalLight);
+    for (int i = 0; i < MAX_POINT_LIGHT; i++)
+    {
+        setUniform("pointLights[" + std::to_string(i) + "]", pointLights[i]);
+    }
 }
 
 
@@ -63,3 +76,21 @@ DirectionalLight&   PhongShader::getDirectionalLight()
 {
     return directionalLight;
 } 
+
+void    PhongShader::setPointLight(PointLight *pointLight)
+{
+    if ((sizeof(pointLight) / sizeof(pointLight[0])) > MAX_POINT_LIGHT)
+    {
+        std::cout << "Error: too many point lights. Max is: " << MAX_POINT_LIGHT << std::endl;
+        exit(0);
+    }
+
+    pointLights = pointLight;
+}
+
+PointLight&         PhongShader::getPointLight()
+{
+    return *pointLights;
+}
+
+

@@ -50,7 +50,7 @@ void    MainGame::initSystems()
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-    glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     // get version info
     std::cout << "Renderer:" << glGetString(GL_RENDERER) << '\n';
@@ -58,6 +58,8 @@ void    MainGame::initSystems()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_CLAMP);
+    glEnable(GL_TEXTURE_2D);
 
     shader.initializeShader();
 }
@@ -139,16 +141,26 @@ void    MainGame::processInput()
 void        MainGame::gameLoop()
 {
     Transform           transform;
-    DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 2.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+    
+    PointLight pLight1(BaseLight(glm::vec3(1.0f, 1.0f, 0.0f), 10.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(-1.0f, 3.0f, 5.0f));
+    PointLight pLight2(BaseLight(glm::vec3(0.0f, 1.0f, 1.0f), 10.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 3.0f, 4.0f));
+    PointLight pLight3(BaseLight(glm::vec3(0.0f, 0.0f, 1.0f), 20.8f), Attenuation(0.0f, 1.0f, 1.0f), glm::vec3(1.0f, 0.0f, 3.0f));
+    PointLight pLight4(BaseLight(glm::vec3(1.0f, 0.0f, 1.0f), 20.8f), Attenuation(1.0f, 0.0f, 1.0f), glm::vec3(4.0f, 0.0f, 2.0f));
+    PointLight pLightArray[4] = {pLight1, pLight2, pLight3, pLight4};
+    shader.setPointLight(pLightArray);
+    
     shader.setDirectionalLight(light);
     Texture     texture("assets/wood.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0));
     Sprite sprite2("assets/monkey3.obj");
+
     camY = 0.0f;
     camX = 0.0f;
     camZ = -3.0f;
     camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f); 
     shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
+    
     
     transform.getRot().y = 3.0f;
     while (gameState != GameState::EXIT)
@@ -162,7 +174,6 @@ void        MainGame::gameLoop()
         
         //transform.getPos().y = sinCounter / 10;
         transform.getRot().y = counter / 10;
-        shader.getDirectionalLight();
 
         material.getColor() = glm::vec3(0.6, 0.3, 0.0);
         shader.use();

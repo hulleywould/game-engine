@@ -14,7 +14,7 @@ class PhongShader: public GlslProgram {
         ~PhongShader(void);
 
         void    initializeShader();
-        void    update(const Transform &transform, const Camera &camera, Material &material);
+        void    update(const Transform &transform, Camera &camera, Material &material);
         
         void    setAmbientLight(const glm::vec3 &ambience);
         void    setDirectionalLight(const DirectionalLight &dir);

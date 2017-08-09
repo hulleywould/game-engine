@@ -160,8 +160,8 @@ void        MainGame::gameLoop()
         float sinCounter = sinf(counter);
         float cosCounter = cosf(counter);
         
-        transform.getPos().y = sinCounter / 10;
-        transform.getPos().z = sinCounter / 10;
+        //transform.getPos().y = sinCounter / 10;
+        transform.getRot().y = counter / 10;
         shader.getDirectionalLight();
 
         material.getColor() = glm::vec3(0.6, 0.3, 0.0);

@@ -74,3 +74,19 @@ void    Sprite::draw()
     glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+/*void    Sprite::calcNormals(Vertex *vertices, unsigned int *indices)
+{
+    Math math;
+    for (int i = 0; i < (sizeof(indices) / sizeof(*indices)); i++)
+    {
+        int i0 = indices[i];
+        int i1 = indices[i + 1];
+        int i2 = indices[i + 2];
+
+        glm::vec3 v1 = vertices[i1].getPos() - vertices[i0].getPos();
+        glm::vec3 v2 = vertices[i2].getPos() - vertices[i0].getPos();
+
+        glm::vec3 normal = glm::fastNormalize(glm::cross(v1, v2));
+    }
+}*/

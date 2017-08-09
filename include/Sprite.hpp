@@ -8,6 +8,8 @@
 #include <vector>
 #include "Vertex.hpp"
 #include "obj_loader.h"
+#include <glm/glm.hpp>
+#include <glm/gtx/fast_square_root.hpp>
 
 class Sprite {
 
@@ -27,6 +29,7 @@ class Sprite {
             NORMAL_VB,
             NUM_BUFFERS
         };
+        //void            calcNormals(Vertex *vertices, unsigned int *indices);
         void            initMesh(const IndexedModel& model);
         GLuint          vaoID; //vertex array object ID.
         GLuint          vboID[POSITION_VB]; //vertext buffer object ID. GLuint guaranteed to be 32bits

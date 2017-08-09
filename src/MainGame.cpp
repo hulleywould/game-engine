@@ -132,16 +132,16 @@ void        MainGame::processInput()
 
 void        MainGame::gameLoop() 
 {
-    camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f);
     Transform   transform;
-    shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
-    transform.getRot().y = 3.0f;
     Texture     texture("assets/wood.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0));
     Sprite sprite2("assets/monkey3.obj");
     camY = 0.0f;
     camX = 0.0f;
     camZ = -3.0f;
+    camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f); 
+    shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
+    transform.getRot().y = 3.0f;
     while (gameState != GameState::EXIT)
     {
         glClearDepth(1.0);

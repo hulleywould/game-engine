@@ -92,7 +92,7 @@ void main() {
     color *= textureColor;
     totalLight += calcDirectionalLight(directionalLight, normal);
 
-    for(int i = 0; i < MAX_POINT_LIGHTS; i++)
+    for(int i = 0; i < 1; i++)
     {
         totalLight += calcPointLight(pointLights[i], normal);
     }

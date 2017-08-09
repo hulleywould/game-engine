@@ -8,9 +8,12 @@ MainGame::MainGame(void) :
     gameState(GameState::PLAY),
     time(0.0f),
     counter(0.0f),
-    camera()
+    camera(),
+    pLight1(BaseLight(glm::vec3(1.0f, 0.0f, 0.0f), 10.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(-1.0f, 3.0f, 5.0f)),
+    pLight2(BaseLight(glm::vec3(0.0f, 1.0f, 0.5f), 10.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 3.0f, 4.0f))
+    
 {
-
+    
 }
 
 MainGame::~MainGame(void)
@@ -141,28 +144,27 @@ void    MainGame::processInput()
 void        MainGame::gameLoop()
 {
     Transform           transform;
-    DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+    Texture     texture("assets/wood.jpg");
+    Material    material(texture, glm::vec3(0.0, 0.0, 0.0), 1, 8);
+    Sprite sprite2("assets/monkey3.obj");
     
-    PointLight pLight1(BaseLight(glm::vec3(1.0f, 1.0f, 0.0f), 10.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(-1.0f, 3.0f, 5.0f));
-    PointLight pLight2(BaseLight(glm::vec3(0.0f, 1.0f, 1.0f), 10.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 3.0f, 4.0f));
-    PointLight pLight3(BaseLight(glm::vec3(0.0f, 0.0f, 1.0f), 20.8f), Attenuation(0.0f, 1.0f, 1.0f), glm::vec3(1.0f, 0.0f, 3.0f));
-    PointLight pLight4(BaseLight(glm::vec3(1.0f, 0.0f, 1.0f), 20.8f), Attenuation(1.0f, 0.0f, 1.0f), glm::vec3(4.0f, 0.0f, 2.0f));
-    PointLight pLightArray[4] = {pLight1, pLight2, pLight3, pLight4};
+    //directional light
+    DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+    shader.setDirectionalLight(light);
+
+    //point light things
+    std::vector<PointLight> pLightArray;
+    pLightArray.push_back(pLight1);
+    pLightArray.push_back(pLight2);
     shader.setPointLight(pLightArray);
     
-    shader.setDirectionalLight(light);
-    Texture     texture("assets/wood.jpg");
-    Material    material(texture, glm::vec3(0.0, 0.0, 0.0));
-    Sprite sprite2("assets/monkey3.obj");
-
     camY = 0.0f;
     camX = 0.0f;
     camZ = -3.0f;
-    camera.initCamera(glm::vec3(0.0, 0.0, -3.0), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f); 
+    camera.initCamera(glm::vec3(camX, camY, camZ), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f); 
     shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
-    
-    
-    transform.getRot().y = 3.0f;
+    transform.getRot().y = 3.15f;
+
     while (gameState != GameState::EXIT)
     {
         glClearDepth(1.0);
@@ -173,7 +175,11 @@ void        MainGame::gameLoop()
         float cosCounter = cosf(counter);
         
         //transform.getPos().y = sinCounter / 10;
-        transform.getRot().y = counter / 10;
+        //transform.getRot().y = counter / 10;
+        pLight1.setPosition(glm::vec3(sinCounter, 8.0f, sinCounter / 10));
+        pLight2.setPosition(glm::vec3(cosCounter, 8.0f, cosCounter / 10));
+        shader.setPointLight(pLightArray);
+
 
         material.getColor() = glm::vec3(0.6, 0.3, 0.0);
         shader.use();

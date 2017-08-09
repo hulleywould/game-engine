@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -48,7 +49,10 @@ class MainGame {
         float       time;
         float       counter;
         Camera      camera;
-        PhongShader      shader;
+        PhongShader         shader;
+        PointLight          pLight1;
+        PointLight          pLight2;
+        
         
 };
 

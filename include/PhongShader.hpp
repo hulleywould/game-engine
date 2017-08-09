@@ -10,6 +10,7 @@
 #include "PointLight.hpp"
 #include <iostream>
 #include <string>
+#include <vector>
 
 class PhongShader: public GlslProgram {
     public:
@@ -21,19 +22,18 @@ class PhongShader: public GlslProgram {
         
         void    setAmbientLight(const glm::vec3 &ambience);
         void    setDirectionalLight(const DirectionalLight &dir);
-        void    setPointLight(PointLight *pointLight);
+        void    setPointLight(std::vector<PointLight> pointLight);
 
-        glm::vec3&          getAmbientLight();
-        DirectionalLight&   getDirectionalLight();
-        PointLight&         getPointLight();
-        int                 MAX_POINT_LIGHT = 4;
+        glm::vec3&                          getAmbientLight();
+        DirectionalLight&                   getDirectionalLight();
+        std::vector<PointLight>&            getPointLight();
+        int                                 MAX_POINT_LIGHT = 4;
 
     private:
         glm::vec3           ambientLight;
         DirectionalLight    directionalLight;
         BaseLight           baseLight;
-        
-        PointLight          *pointLights;
+        std::vector<PointLight>  pointLights;
 };
 
 #endif

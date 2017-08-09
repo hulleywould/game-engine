@@ -77,9 +77,9 @@ DirectionalLight&   PhongShader::getDirectionalLight()
     return directionalLight;
 } 
 
-void    PhongShader::setPointLight(PointLight *pointLight)
+void    PhongShader::setPointLight(std::vector<PointLight> pointLight)
 {
-    if ((sizeof(pointLight) / sizeof(pointLight[0])) > MAX_POINT_LIGHT)
+    if (pointLight.size() > MAX_POINT_LIGHT)
     {
         std::cout << "Error: too many point lights. Max is: " << MAX_POINT_LIGHT << std::endl;
         exit(0);
@@ -88,9 +88,9 @@ void    PhongShader::setPointLight(PointLight *pointLight)
     pointLights = pointLight;
 }
 
-PointLight&         PhongShader::getPointLight()
+std::vector<PointLight>&    PhongShader::getPointLight()
 {
-    return *pointLights;
+    return pointLights;
 }
 
 

@@ -111,32 +111,32 @@ void    MainGame::processInput()
         }
         else if (camUp == GLFW_PRESS)
         {
-            camY -= 1.0f;
+            camY -= 0.2f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (camDown == GLFW_PRESS)
         {
-            camY += 1.0f;
+            camY += 0.2f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (camLeft == GLFW_PRESS)
         {
-            camX -= 1.0f;
+            camX -= 0.2f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (camRight == GLFW_PRESS)
         {
-            camX += 1.0f;
+            camX += 0.2f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (zoomIn == GLFW_PRESS)
         {
-            camZ += 1.0f;
+            camZ += 0.2f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
         else if (zoomOut == GLFW_PRESS)
         {
-            camZ -= 1.00f;
+            camZ -= 0.2f;
             camera.camUpdate(glm::vec3(camX, camY, camZ));
         }
 
@@ -146,9 +146,11 @@ void    MainGame::processInput()
 void        MainGame::gameLoop()
 {
     Transform           transform;
+     Transform          transform2;
     Texture     texture("assets/wood.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0), 1, 8);
-    Sprite sprite2("assets/monkey3.obj");
+    Sprite sprite1("assets/monkey3.obj");
+    Sprite sprite2("assets/testBoxNoUV.obj");
     
     //directional light
     DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -168,13 +170,12 @@ void        MainGame::gameLoop()
     
     camY = 0.0f;
     camX = 0.0f;
-    camZ = -30.0f;
+    camZ = -10.0f;
     camera.initCamera(glm::vec3(camX, camY, camZ), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f); 
     shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
     transform.getRot().y = 3.15f;
-    transform.getScale().x = 10.0f;
-    transform.getScale().y = 10.0f;
-    transform.getScale().z = 10.0f;
+    transform2.getRot().y = 3.15f;    
+    transform2.getPos().x = 5.0f;
 
     while (gameState != GameState::EXIT)
     {
@@ -190,11 +191,15 @@ void        MainGame::gameLoop()
         material.getColor() = glm::vec3(0.6, 0.3, 0.0);
         
         shader.use();
-        
     
         shader.update(transform, camera, material);
 
         sprite2.draw();
+
+        
+        shader.update(transform2, camera, material);
+        sprite1.draw();
+        
 
         shader.unuse();
 

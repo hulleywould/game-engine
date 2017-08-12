@@ -123,7 +123,13 @@ void    GlslProgram::setUniform(const std::string &uniformName, PointLight point
     setUniformf(uniformName + ".atten.exponent", pointLight.getAttenuation().getExponent());
     setUniform(uniformName + ".position", pointLight.getPosition());
     setUniformf(uniformName + ".range", pointLight.getRange());
-    
+}
+
+void    GlslProgram::setUniform(const std::string &uniformName, SpotLight spotLight)
+{
+    setUniform(uniformName + ".pointLight", spotLight.getPointLight());
+    setUniform(uniformName + ".direction", spotLight.getDirection());
+    setUniformf (uniformName + ".cutoff", spotLight.getCutoff());
 }
 
 void    GlslProgram::use()

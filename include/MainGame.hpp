@@ -52,8 +52,7 @@ class MainGame {
         PhongShader         shader;
         PointLight          pLight1;
         PointLight          pLight2;
-        
-        
+        SpotLight           sLight1;
 };
 
 #endif

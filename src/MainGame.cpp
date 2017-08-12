@@ -9,8 +9,10 @@ MainGame::MainGame(void) :
     time(0.0f),
     counter(0.0f),
     camera(),
-    pLight1(BaseLight(glm::vec3(1.0f, 0.0f, 0.0f), 500.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(-5.0f, 0.0f, 1.0f), 30.0f),
-    pLight2(BaseLight(glm::vec3(0.0f, 1.0f, 0.0f), 500.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(5.0f, 0.0f, 2.0f), 30.0f)
+    pLight1(BaseLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(-5.0f, 0.0f, 1.0f), 30.0f),
+    pLight2(BaseLight(glm::vec3(0.0f, 1.0f, 1.0f), 0.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(5.0f, 0.0f, 2.0f), 30.0f),
+    sLight1(PointLight(BaseLight(glm::vec3(0.0f, 1.0f, 0.0f), 100.0f), Attenuation(0.0f, 0.0f, 0.1f), glm::vec3(-5.0f, 0.0f, 1.0f), 30.0f),
+    glm::vec3(1.0f, 1.0f, 1.0f), 0.7f)
     
 {
     
@@ -150,15 +152,19 @@ void        MainGame::gameLoop()
     
     //directional light
     DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
-    //shader.setDirectionalLight(light);
+    shader.setDirectionalLight(light);
 
     //point light thing
     std::vector<PointLight> pLightArray;
     pLightArray.push_back(pLight1);
     pLightArray.push_back(pLight2);
+    //segfaults if this line is removed. WTF??
     shader.setPointLight(pLightArray);
-    
-    
+
+    std::vector<SpotLight> sLightArray;
+    sLightArray.push_back(sLight1);
+    //sLightArray.push_back(sLight2);
+    shader.setSpotLight(sLightArray);
     
     camY = 0.0f;
     camX = 0.0f;

@@ -28,6 +28,7 @@ void    PhongShader::initializeShader()
     addUniform("specularIntensity");
     addUniform("specularPower");
     addUniform("eyePos");
+    //pointLights
     for (int i = 0; i < MAX_POINT_LIGHT; i++)
     {
         addUniform("pointLights[" + std::to_string(i) + "].base.color");
@@ -40,6 +41,21 @@ void    PhongShader::initializeShader()
         addUniform("pointLights[" + std::to_string(i) + "].range");
         
     }
+    //spotLights
+    for (int i = 0; i < MAX_SPOT_LIGHT; i++)
+    {
+        addUniform("spotLights[" + std::to_string(i) + "].pointLight.base.color");
+        addUniform("spotLights[" + std::to_string(i) + "].pointLight.base.intensity");
+        addUniform("spotLights[" + std::to_string(i) + "].pointLight.atten.constant");
+        addUniform("spotLights[" + std::to_string(i) + "].pointLight.atten.constant");
+        addUniform("spotLights[" + std::to_string(i) + "].pointLight.atten.linear");
+        addUniform("spotLights[" + std::to_string(i) + "].pointLight.atten.exponent");
+        addUniform("spotLights[" + std::to_string(i) + "].pointLight.position");
+        addUniform("spotLights[" + std::to_string(i) + "].pointLight.range");
+        addUniform("spotLights[" + std::to_string(i) + "].direction");
+        addUniform("spotLights[" + std::to_string(i) + "].cutoff");
+    }
+
 }
 
 void    PhongShader::update(const Transform &transform, Camera &camera, Material &material)
@@ -56,6 +72,11 @@ void    PhongShader::update(const Transform &transform, Camera &camera, Material
     {
         setUniform("pointLights[" + std::to_string(i) + "]", pointLights[i]);
     }
+    for (int i = 0; i < MAX_SPOT_LIGHT; i++)
+    {
+        setUniform("spotLights[" + std::to_string(i) + "]", spotLights[i]);
+    }
+    
 }
 
 
@@ -95,4 +116,19 @@ std::vector<PointLight>&    PhongShader::getPointLight()
     return pointLights;
 }
 
+void    PhongShader::setSpotLight(std::vector<SpotLight> spotLight)
+{
+    if (spotLight.size() > MAX_SPOT_LIGHT)
+    {
+        std::cout << "Error: too many spot lights. Max is: " << MAX_SPOT_LIGHT << std::endl;
+        exit(0);
+    }
+
+    spotLights = spotLight;
+}
+
+std::vector<SpotLight>&    PhongShader::getSpotLight()
+{
+    return spotLights;
+}
 

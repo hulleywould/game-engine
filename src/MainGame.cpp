@@ -7,7 +7,7 @@ MainGame::MainGame(void) :
     window(NULL),
     screenWidth(640),
     screenHeight(480),
-    gameState(GameState::PLAY),
+    gameState(GameState::MENU),
     time(0.0f),
     counter(0.0f),
     camera(),
@@ -52,7 +52,7 @@ void    MainGame::initSystems()
 
     createWindow(screenWidth, screenHeight);
     glfwMakeContextCurrent(window);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     handleContext();
 
     glEnable(GL_CULL_FACE);
@@ -107,9 +107,7 @@ void    MainGame::processInput()
         auto camRight = glfwGetKey(window, GLFW_KEY_D);
         auto zoomIn = glfwGetKey(window, GLFW_KEY_Q);
         auto zoomOut = glfwGetKey(window, GLFW_KEY_E);
-        auto mouseLeft = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
-        //glfwSetCursorEnterCallback(window, cursor_enter);
-        
+        auto mouseLeft = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT); 
         if (EscKey == GLFW_PRESS)
         {
             glfwTerminate();
@@ -150,22 +148,12 @@ void    MainGame::processInput()
             glfwGetCursorPos(window, &xpos, &ypos);
             camera.mouseUpdate(glm::vec2(xpos, ypos));
         }
-
-
-    }
-}
-
-//might remove this if i cant get it working
-void        MainGame::cursor_enter(GLFWwindow *window, int entered)
-{
-    if (entered)
-    {
-        glfwGetCursorPos(window, &xpos, &ypos);
     }
 }
 
 void        MainGame::gameLoop()
 {
+    //segFaults if transform is made global. WTF??
     Transform           transform;
     Transform          transform2;
     transform.setProjection(70.0f, (float)getWidth(), (float)getHeight(), 0.1f, 1000.0f);
@@ -201,37 +189,45 @@ void        MainGame::gameLoop()
     
     while (gameState != GameState::EXIT)
     {
-        float cosCounter = cosf(counter);
-        float sinCounter = sinf(counter);
+        if (gameState == GameState::PLAY)
+        {
+            float cosCounter = cosf(counter);
+            float sinCounter = sinf(counter);
 
-        glClearDepth(1.0);
+            glClearDepth(1.0);
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        transform.getPos().y = sinCounter / 10;
+            transform.getPos().y = sinCounter / 10;
+            
+            material.getColor() = glm::vec3(0.6, 0.3, 0.0);
+            
+            shader.use();
+
+            //moving spotlight
+            sLightArray[0].setDirection(glm::vec3(sinCounter * 10, 2.0f, 1.0f));
+            shader.setSpotLight(sLightArray);
         
-        material.getColor() = glm::vec3(0.6, 0.3, 0.0);
-        
-        shader.use();
+            //mesh one
+            shader.update(transform, camera, material);
+            sprite2.draw();
 
-        //moving spotlight
-        sLightArray[0].setDirection(glm::vec3(sinCounter * 10, 2.0f, 1.0f));
-        shader.setSpotLight(sLightArray);
-    
-        //mesh one
-        shader.update(transform, camera, material);
-        sprite2.draw();
+            //mesh two
+            shader.update(transform2, camera, material);
+            sprite1.draw();
+            
+            shader.unuse();
 
-        //mesh two
-        shader.update(transform2, camera, material);
-        sprite1.draw();
-        
-        shader.unuse();
+            glfwSwapBuffers(window);
 
-        glfwSwapBuffers(window);
-
-        processInput();
-        counter += 0.05f;
+            processInput();
+            counter += 0.05f;
+        }
+        else if (gameState == GameState::MENU)
+        {
+            std::cout << "entered menu" << std::endl;
+            gameState = GameState::PLAY;
+        }
     }
 }
 

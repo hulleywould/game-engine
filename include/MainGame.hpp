@@ -15,7 +15,7 @@
 #include "PhongShader.hpp"
 
 
-enum class GameState {PLAY, EXIT};
+enum class GameState {PLAY, EXIT, MENU};
 
 class MainGame {
     public:
@@ -26,7 +26,6 @@ class MainGame {
 
         void     initGL();
         void     createWindow(int width, int height);
-        static void     cursor_enter(GLFWwindow *window, int entered);
 
         //getters and setters
         int         &getWidth();

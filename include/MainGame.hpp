@@ -26,6 +26,7 @@ class MainGame {
 
         void     initGL();
         void     createWindow(int width, int height);
+        static void     cursor_enter(GLFWwindow *window, int entered);
 
         //getters and setters
         int         &getWidth();
@@ -36,6 +37,8 @@ class MainGame {
         float       camY;
         float       camX;
         float       camZ;
+        static double    xpos;
+        static double    ypos;
 
     private:
         void        processInput();
@@ -52,7 +55,7 @@ class MainGame {
         PhongShader         shader;
         PointLight          pLight1;
         PointLight          pLight2;
-        
+        SpotLight           sLight1;
         
 };
 

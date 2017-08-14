@@ -122,6 +122,14 @@ void    GlslProgram::setUniform(const std::string &uniformName, PointLight point
     setUniformf(uniformName + ".atten.linear", pointLight.getAttenuation().getLinear());
     setUniformf(uniformName + ".atten.exponent", pointLight.getAttenuation().getExponent());
     setUniform(uniformName + ".position", pointLight.getPosition());
+    setUniformf(uniformName + ".range", pointLight.getRange());
+}
+
+void    GlslProgram::setUniform(const std::string &uniformName, SpotLight spotLight)
+{
+    setUniform(uniformName + ".pointLight", spotLight.getPointLight());
+    setUniform(uniformName + ".direction", spotLight.getDirection());
+    setUniformf (uniformName + ".cutoff", spotLight.getCutoff());
 }
 
 void    GlslProgram::use()
@@ -139,13 +147,6 @@ void    GlslProgram::unuse()
         glDisableVertexAttribArray(i);
     }
 }
-
-/*void    GlslProgram::update(const Transform &transform, const Camera &camera, Material &material)
-{
-    glm::mat4 modelViewProjection = camera.getViewProjection() * transform.getModel();
-    setUniform("transform", modelViewProjection);
-    setUniform("color", material.getColor());
-}*/
 
 void    GlslProgram::addAttribute(const std::string attributeName)
 {

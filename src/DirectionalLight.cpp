@@ -24,7 +24,7 @@ void        DirectionalLight::setBase(const BaseLight &b)
 
 void        DirectionalLight::setDirection(const glm::vec3 &direc)
 {
-    direction = direc;
+    direction = glm::normalize(direc);
 }
 
 BaseLight&  DirectionalLight::getBase()

@@ -13,6 +13,7 @@
 #include "DirectionalLight.hpp"
 #include "BaseLight.hpp"
 #include "PointLight.hpp"
+#include "SpotLight.hpp"
 
 class GlslProgram {
     public:
@@ -34,6 +35,7 @@ class GlslProgram {
         void    setUniform(const std::string &uniformName, PointLight pointlight);
         void    setUniform(const std::string &uniformName, DirectionalLight directionalLight);
         void    setUniform(const std::string &uniformName, BaseLight baselight);
+        void    setUniform(const std::string &uniformName, SpotLight spotLight);
         
         std::map<std::string, int> uniformMap;
 

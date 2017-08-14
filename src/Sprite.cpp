@@ -41,27 +41,27 @@ void            Sprite::initMesh(const IndexedModel& model)
 
     glGenBuffers(NUM_BUFFERS, vboID);
     glBindBuffer(GL_ARRAY_BUFFER, vboID[POSITION_VB]);
-    glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
     //texture buffer
     glBindBuffer(GL_ARRAY_BUFFER, vboID[TEXCOORD_VB]);
-    glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.texCoords[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.texCoords[0], GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
     //normal buffer
     glBindBuffer(GL_ARRAY_BUFFER, vboID[NORMAL_VB]);
-    glBufferData(GL_ARRAY_BUFFER, model.normals.size() * sizeof(model.normals[0]), &model.normals[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, model.normals.size() * sizeof(model.normals[0]), &model.normals[0], GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID[INDEX_VB]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_DYNAMIC_DRAW);
 
     
 
@@ -74,19 +74,3 @@ void    Sprite::draw()
     glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-
-/*void    Sprite::calcNormals(Vertex *vertices, unsigned int *indices)
-{
-    Math math;
-    for (int i = 0; i < (sizeof(indices) / sizeof(*indices)); i++)
-    {
-        int i0 = indices[i];
-        int i1 = indices[i + 1];
-        int i2 = indices[i + 2];
-
-        glm::vec3 v1 = vertices[i1].getPos() - vertices[i0].getPos();
-        glm::vec3 v2 = vertices[i2].getPos() - vertices[i0].getPos();
-
-        glm::vec3 normal = glm::fastNormalize(glm::cross(v1, v2));
-    }
-}*/

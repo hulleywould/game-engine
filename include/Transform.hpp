@@ -3,6 +3,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
+#include "Camera.hpp"
 
 class Transform {
     public:
@@ -11,7 +12,9 @@ class Transform {
                 const glm::vec3 &rot,
                 const glm::vec3 &scaling);
         ~Transform(void);
-        glm::mat4   getModel() const;
+        glm::mat4   getTransformation() const;
+        glm::mat4   getProjectedTransformation() const;
+        Camera      camera;
 
         //getters and setters
         glm::vec3   &getPos();
@@ -23,12 +26,18 @@ class Transform {
         void        setRot(const glm::vec3 &rot);
         void        setScale(const glm::vec3 &scaling);
         void        setTranslation(float x, float y, float z);
+        void        setProjection(float fov, float width, float height, float zNear, float zFar);
         
     private: 
         glm::vec3   position;
         glm::vec3   rotation;
         glm::vec3   scale;
         glm::vec3   translation;
+        float       zNear;
+        float       zFar;
+        float       width;
+        float       height;
+        float       fov;
 
 };
 

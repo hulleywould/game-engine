@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 file(GLOB SOURCES "src/*.cpp")
 
 set(INCLUDE_DIR include)
+set(NUKLEAR_INCLUDE_DIR lib/nuklear/include)
 
 find_package(glfw3 3.1 REQUIRED)
 find_package(GLEW REQUIRED)
@@ -15,5 +16,5 @@ find_package(OpenGL REQUIRED)
 
 add_executable(game-engine ${SOURCES})
 
-include_directories(${GLFW_INCLUDE_DIRS} ${INCLUDE_DIR})
+include_directories(${GLFW_INCLUDE_DIRS} ${INCLUDE_DIR} ${NUKLEAR_INCLUDE_DIR})
 target_link_libraries(game-engine ${GLFW_LIBRARIES} glfw ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARIES})

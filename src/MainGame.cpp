@@ -159,7 +159,7 @@ void        MainGame::gameLoop()
     transform.setProjection(70.0f, (float)getWidth(), (float)getHeight(), 0.1f, 1000.0f);
     transform2.setProjection(70.0f, (float)getWidth(), (float)getHeight(), 0.1f, 1000.0f);
 
-    Texture     texture("assets/wood.jpg");
+    Texture     texture("assets/white.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0), 1, 8);
     Sprite sprite1("assets/monkey3.obj");
     Sprite sprite2("assets/testBoxNoUV.obj");

@@ -2,6 +2,7 @@
 
 const int MAX_POINT_LIGHTS = 4;
 const int MAX_SPOT_LIGHTS = 4;
+const float levels = 3.0;
 
 in vec2 texCoord0;
 in vec3 normal0;
@@ -58,6 +59,10 @@ uniform float specularPower;
 vec4    calcLight(BaseLight base, vec3 direction, vec3 normal)
 {
     float diffuseFactor = dot(normal, -direction);
+    //cell shading
+    float level = floor(diffuseFactor * levels);
+    diffuseFactor = level / levels;
+    //end of cell shading
     vec4  diffuseColor = vec4(0,0,0,0);
     vec4 specularColor = vec4(0,0,0,0);
     if (diffuseFactor > 0)
@@ -68,7 +73,9 @@ vec4    calcLight(BaseLight base, vec3 direction, vec3 normal)
 
         float specularFactor = dot(directionToEye, reflectDirection);
         specularFactor = pow(specularFactor, specularPower);
-
+        //cell shading
+        float level = floor(specularFactor * levels);
+        specularFactor = level / levels;
         if (specularFactor > 0)
         {
             specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
@@ -116,7 +123,7 @@ vec4 calcSpotLight(SpotLight spotLight, vec3 normal)
 }
 
 void main() {
-    vec4 totalLight = vec4(ambientLight, 1.0);
+    vec4 totalLight = vec4(ambientLight, 1.0);     
     vec4 textureColor = texture(diffuse, texCoord0);
     vec4 color = vec4(baseColor, 1.0);
     vec3 normal = normalize(normal0);

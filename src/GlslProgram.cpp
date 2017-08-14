@@ -148,13 +148,6 @@ void    GlslProgram::unuse()
     }
 }
 
-/*void    GlslProgram::update(const Transform &transform, const Camera &camera, Material &material)
-{
-    glm::mat4 modelViewProjection = camera.getViewProjection() * transform.getModel();
-    setUniform("transform", modelViewProjection);
-    setUniform("color", material.getColor());
-}*/
-
 void    GlslProgram::addAttribute(const std::string attributeName)
 {
     glBindAttribLocation(programID, numAttributes++, attributeName.c_str());

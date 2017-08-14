@@ -17,7 +17,7 @@ translation(glm::vec3(0,0,0))
 }
 
 
-glm::mat4   Transform::getModel() const
+glm::mat4   Transform::getTransformation() const
 {
     glm::mat4 posMatrix = glm::translate(position);
     glm::mat4 rotxMatrix = glm::rotate(rotation.x, glm::vec3(1.0, 0.0, 0.0));
@@ -27,6 +27,14 @@ glm::mat4   Transform::getModel() const
     //matrices must be multiplied in reverse order to work 
     glm::mat4 rotMatrix = rotzMatrix * rotyMatrix * rotxMatrix; 
     return posMatrix * rotMatrix * scaleMatrix;
+}
+
+glm::mat4   Transform::getProjectedTransformation() const
+{   
+    glm::mat4 transformationMatrix = getTransformation();
+    glm::mat4 projectionMatrix = glm::perspective(fov, width / height, zNear, zFar);
+
+    return projectionMatrix * transformationMatrix;
 }
 
 Transform::~Transform(void)
@@ -74,5 +82,14 @@ glm::vec3&  Transform::getTranslation()
 void        Transform::setTranslation(float x, float y, float z)
 {
     translation = glm::vec3(x,y,z);
+}
+
+void        Transform::setProjection(float fieldOfView, float w, float h, float near, float far)
+{
+    zNear = near;
+    zFar = far;
+    width = w;
+    height = h;
+    fov = fieldOfView;
 }
 

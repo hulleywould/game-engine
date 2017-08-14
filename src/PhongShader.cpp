@@ -20,6 +20,7 @@ void    PhongShader::initializeShader()
     linkShaders();
 
     addUniform("transform");
+    addUniform("transformProjected");
     addUniform("baseColor");
     addUniform("ambientLight");
     addUniform("directionalLight.base.color");
@@ -60,8 +61,10 @@ void    PhongShader::initializeShader()
 
 void    PhongShader::update(const Transform &transform, Camera &camera, Material &material)
 {
-    glm::mat4 modelViewProjection = camera.getViewProjection() * transform.getModel();
-    setUniform("transform", modelViewProjection);
+    glm::mat4 modelViewProjection = camera.getViewProjection() * camera.getWorldToView() * transform.getTransformation();
+    glm::mat4 worldView = transform.getProjectedTransformation();
+    setUniform("transform", worldView);
+    setUniform("transformProjected", modelViewProjection);
     setUniform("baseColor", material.getColor());
     setUniformf("specularIntensity", material.getSpecularIntensity());
     setUniformf("specularPower", material.getSpecularPower());

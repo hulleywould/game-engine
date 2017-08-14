@@ -13,7 +13,7 @@
 #include "Shader.hpp"
 #include "Camera.hpp"
 #include "PhongShader.hpp"
-
+#include "menu.hpp"
 
 enum class GameState {PLAY, EXIT};
 
@@ -56,7 +56,7 @@ class MainGame {
         PointLight          pLight1;
         PointLight          pLight2;
         SpotLight           sLight1;
-        
+
 };
 
 #endif

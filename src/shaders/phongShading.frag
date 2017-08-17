@@ -60,8 +60,8 @@ vec4    calcLight(BaseLight base, vec3 direction, vec3 normal)
 {
     float diffuseFactor = dot(normal, -direction);
     //cell shading
-    float level = floor(diffuseFactor * levels);
-    diffuseFactor = level / levels;
+    //float level = floor(diffuseFactor * levels);
+    //diffuseFactor = level / levels;
     //end of cell shading
     vec4  diffuseColor = vec4(0,0,0,0);
     vec4 specularColor = vec4(0,0,0,0);
@@ -74,8 +74,8 @@ vec4    calcLight(BaseLight base, vec3 direction, vec3 normal)
         float specularFactor = dot(directionToEye, reflectDirection);
         specularFactor = pow(specularFactor, specularPower);
         //cell shading
-        float level = floor(specularFactor * levels);
-        specularFactor = level / levels;
+        //float level = floor(specularFactor * levels);
+        //specularFactor = level / levels;
         if (specularFactor > 0)
         {
             specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;

@@ -11,9 +11,9 @@ MainGame::MainGame(void) :
     time(0.0f),
     counter(0.0f),
     camera(),
-    pLight1(BaseLight(glm::vec3(1.0f, 0.0f, 0.0f), 50.8f), Attenuation(0.0f, 0.0f, 0.5f), glm::vec3(-5.0f, 1.0f, -5.0f), 100.0f),
-    pLight2(BaseLight(glm::vec3(0.0f, 0.5f, 1.0f), 50.8f), Attenuation(0.0f, 0.0f, 0.5f), glm::vec3(-2.0f, 1.0f, -5.0f), 100.0f),
-    sLight1(PointLight(BaseLight(glm::vec3(0.0f, 1.0f, 0.0f), 50.8f), Attenuation(0.0f, 0.0f, 0.1f), glm::vec3(1.0f, 1.0f, 1.0f), 30.0f),
+    pLight1(BaseLight(glm::vec3(0.4f, 0.2f, 1.0f), 0.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 10.0f),
+    pLight2(BaseLight(glm::vec3(0.0f, 0.5f, 1.0f), 0.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 10.0f),
+    sLight1(PointLight(BaseLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 10.0f),
     glm::vec3(7.0f, 2.0f, 1.0f), 0.7f)
     
 {
@@ -58,7 +58,7 @@ void    MainGame::initSystems()
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     // get version info
     std::cout << "Renderer:" << glGetString(GL_RENDERER) << '\n';
@@ -201,8 +201,6 @@ void        MainGame::gameLoop()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             transform.getPos().y = sinCounter / 10;
-            
-            
             
             shader.use();
 

@@ -1,6 +1,8 @@
 #ifndef MAINGAME_HPP
 # define MAINGAME_HPP
 
+
+
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -13,7 +15,7 @@
 #include "Shader.hpp"
 #include "Camera.hpp"
 #include "PhongShader.hpp"
-
+#include "menus.hpp"
 
 enum class GameState {PLAY, EXIT, MENU};
 
@@ -55,7 +57,7 @@ class MainGame {
         PointLight          pLight1;
         PointLight          pLight2;
         SpotLight           sLight1;
-        
+
 };
 
 #endif

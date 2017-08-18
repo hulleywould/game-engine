@@ -15,9 +15,9 @@ MainGame::MainGame(void) :
     pLight2(BaseLight(glm::vec3(0.0f, 0.5f, 1.0f), 50.8f), Attenuation(0.0f, 0.0f, 1.f), glm::vec3(-2.0f, 1.0f, -5.0f), 30.0f),
     sLight1(PointLight(BaseLight(glm::vec3(0.0f, 1.0f, 0.0f), 50.8f), Attenuation(0.0f, 0.0f, 0.1f), glm::vec3(1.0f, 1.0f, 1.0f), 30.0f),
     glm::vec3(7.0f, 2.0f, 1.0f), 0.7f)
-    
+
 {
-    
+
 }
 
 MainGame::~MainGame(void)
@@ -70,6 +70,7 @@ void    MainGame::initSystems()
     glEnable(GL_TEXTURE_2D);
 
     shader.initializeShader();
+
 }
 
 /* initialize GLFW*/
@@ -107,7 +108,7 @@ void    MainGame::processInput()
         auto camRight = glfwGetKey(window, GLFW_KEY_D);
         auto zoomIn = glfwGetKey(window, GLFW_KEY_Q);
         auto zoomOut = glfwGetKey(window, GLFW_KEY_E);
-        auto mouseLeft = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT); 
+        auto mouseLeft = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
         if (EscKey == GLFW_PRESS)
         {
             glfwTerminate();
@@ -153,6 +154,8 @@ void    MainGame::processInput()
 
 void        MainGame::gameLoop()
 {
+    menus gamemenu(window);
+
     //segFaults if transform is made global. WTF??
     Transform           transform;
     Transform          transform2;
@@ -163,7 +166,7 @@ void        MainGame::gameLoop()
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0), 1, 8);
     Sprite sprite1("assets/monkey3.obj");
     Sprite sprite2("assets/testBoxNoUV.obj");
-    
+
     //directional light
     DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
     shader.setDirectionalLight(light);
@@ -177,16 +180,17 @@ void        MainGame::gameLoop()
 
     std::vector<SpotLight> sLightArray;
     sLightArray.push_back(sLight1);
-    
+
     camY = 0.0f;
     camX = 0.0f;
     camZ = -6.0f;
-    camera.initCamera(glm::vec3(camX, camY, camZ), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f); 
+    camera.initCamera(glm::vec3(camX, camY, camZ), 70.0f, (float)getWidth() / (float)getHeight(), 0.01f, 1000.0f);
     shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
     transform.getRot().y = 3.15f;
-    transform2.getRot().y = 3.15f;    
+    transform2.getRot().y = 3.15f;
     transform2.getPos().x = 5.0f;
-    
+
+    gamemenu.init_start_menu();
     while (gameState != GameState::EXIT)
     {
         if (gameState == GameState::PLAY)
@@ -199,15 +203,15 @@ void        MainGame::gameLoop()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             transform.getPos().y = sinCounter / 10;
-            
+
             material.getColor() = glm::vec3(0.6, 0.3, 0.0);
-            
+
             shader.use();
 
             //moving spotlight
             sLightArray[0].setDirection(glm::vec3(sinCounter * 10, 2.0f, 1.0f));
             shader.setSpotLight(sLightArray);
-        
+
             //mesh one
             shader.update(transform, camera, material);
             sprite2.draw();
@@ -215,18 +219,24 @@ void        MainGame::gameLoop()
             //mesh two
             shader.update(transform2, camera, material);
             sprite1.draw();
-            
+
             shader.unuse();
 
             glfwSwapBuffers(window);
 
             processInput();
-            counter += 0.05f;
         }
         else if (gameState == GameState::MENU)
         {
-            std::cout << "entered menu" << std::endl;
-            gameState = GameState::PLAY;
+            glfwPollEvents();
+
+            glClearColor(0.2f, 0.25f, 0.3f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            gamemenu.render_menu();
+
+            glfwSwapBuffers(window);
+
         }
     }
 }

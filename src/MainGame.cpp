@@ -11,9 +11,9 @@ MainGame::MainGame(void) :
     time(0.0f),
     counter(0.0f),
     camera(),
-    pLight1(BaseLight(glm::vec3(1.0f, 0.0f, 0.0f), 50.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(-5.0f, 1.0f, -5.0f), 30.0f),
-    pLight2(BaseLight(glm::vec3(0.0f, 0.5f, 1.0f), 50.8f), Attenuation(0.0f, 0.0f, 1.f), glm::vec3(-2.0f, 1.0f, -5.0f), 30.0f),
-    sLight1(PointLight(BaseLight(glm::vec3(0.0f, 1.0f, 0.0f), 50.8f), Attenuation(0.0f, 0.0f, 0.1f), glm::vec3(1.0f, 1.0f, 1.0f), 30.0f),
+    pLight1(BaseLight(glm::vec3(0.4f, 0.2f, 1.0f), 0.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 10.0f),
+    pLight2(BaseLight(glm::vec3(0.0f, 0.5f, 1.0f), 0.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 10.0f),
+    sLight1(PointLight(BaseLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.8f), Attenuation(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 10.0f),
     glm::vec3(7.0f, 2.0f, 1.0f), 0.7f)
 
 {
@@ -58,7 +58,7 @@ void    MainGame::initSystems()
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     // get version info
     std::cout << "Renderer:" << glGetString(GL_RENDERER) << '\n';
@@ -162,10 +162,12 @@ void        MainGame::gameLoop()
     transform.setProjection(70.0f, (float)getWidth(), (float)getHeight(), 0.1f, 1000.0f);
     transform2.setProjection(70.0f, (float)getWidth(), (float)getHeight(), 0.1f, 1000.0f);
 
-    Texture     texture("assets/white.jpg");
+    Texture     texture2("assets/wood.jpg");
+    Texture     texture("assets/difuso_flip_oscuro.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0), 1, 8);
-    Sprite sprite1("assets/monkey3.obj");
-    Sprite sprite2("assets/testBoxNoUV.obj");
+    Material    material2(texture2, glm::vec3(0.0, 0.0, 0.0), 1, 8);
+    Sprite sprite1("assets/craneo.OBJ");
+    Sprite sprite2("assets/monkey3.obj");
 
     //directional light
     DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -188,9 +190,9 @@ void        MainGame::gameLoop()
     shader.setAmbientLight(glm::vec3(0.1f,0.1f,0.1f));
     transform.getRot().y = 3.15f;
     transform2.getRot().y = 3.15f;
-    transform2.getPos().x = 5.0f;
+    transform2.getPos().x = 2.0f;
 
-
+    gamemenu.init_start_menu();
     while (gameState != GameState::EXIT)
     {
         if (gameState == GameState::PLAY)
@@ -204,8 +206,6 @@ void        MainGame::gameLoop()
 
             transform.getPos().y = sinCounter / 10;
 
-            material.getColor() = glm::vec3(0.6, 0.3, 0.0);
-
             shader.use();
 
             //moving spotlight
@@ -213,12 +213,16 @@ void        MainGame::gameLoop()
             shader.setSpotLight(sLightArray);
 
             //mesh one
+            texture.useTexture();
+            material.getColor() = glm::vec3(0.6, 0.3, 0.0);
             shader.update(transform, camera, material);
-            sprite2.draw();
+            sprite1.draw();
 
             //mesh two
-            shader.update(transform2, camera, material);
-            sprite1.draw();
+            texture2.useTexture();
+            material2.getColor() = glm::vec3(1.0, 1.0, 1.0);
+            shader.update(transform2, camera, material2);
+            sprite2.draw();
 
             shader.unuse();
 
@@ -230,9 +234,10 @@ void        MainGame::gameLoop()
         {
             glfwPollEvents();
 
+            glClearDepth(1.0);
             glClearColor(0.2f, 0.25f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            gamemenu.init_start_menu();
+
             gamemenu.render_menu();
 
             glfwSwapBuffers(window);

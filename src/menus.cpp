@@ -80,7 +80,6 @@ void menus::init_start_menu() {
 }
 
 int menus::render_menu() {
-    screen->drawContents();
     screen->drawWidgets();
     return 0;
 }

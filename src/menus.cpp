@@ -8,6 +8,7 @@ menus::menus() {
 menus::menus(GLFWwindow* window) {
     nanogui::init();
     screen = new nanogui::Screen();
+    std::cout << "here" << "\n";
     screen->initialize(window, true);
     glfwSetCursorPosCallback(window,
             [](GLFWwindow *, double x, double y) {
@@ -17,7 +18,6 @@ menus::menus(GLFWwindow* window) {
 
     glfwSetMouseButtonCallback(window,
         [](GLFWwindow *, int button, int action, int modifiers) {
-            std::cout << screen->mouseButtonCallbackEvent(button, action, modifiers) << "\n";
             screen->mouseButtonCallbackEvent(button, action, modifiers);
         }
     );

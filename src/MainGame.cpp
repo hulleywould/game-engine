@@ -190,7 +190,7 @@ void        MainGame::gameLoop()
     transform2.getRot().y = 3.15f;
     transform2.getPos().x = 5.0f;
 
-    gamemenu.init_start_menu();
+
     while (gameState != GameState::EXIT)
     {
         if (gameState == GameState::PLAY)
@@ -231,12 +231,12 @@ void        MainGame::gameLoop()
             glfwPollEvents();
 
             glClearColor(0.2f, 0.25f, 0.3f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            gamemenu.init_start_menu();
             gamemenu.render_menu();
 
             glfwSwapBuffers(window);
-
+            gameState = GameState::PLAY;
         }
     }
 }

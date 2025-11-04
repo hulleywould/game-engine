@@ -40,15 +40,25 @@ void    MainGame::initSystems()
     ** then Buffer B is written to while Buffer A clears.
     ** This reduces flicker
     */
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    
+    // Try OpenGL 3.3 first (more compatible with WSLg), fallback to 4.1 if needed
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
     #ifdef __APPLE__
       glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
       glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    #else
+      // Linux/WSL: Use core profile for modern OpenGL
+      glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+      // Don't require forward compatibility on Linux (can cause issues with WSLg)
+      glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
     #endif
 
     glfwWindowHint(GLFW_DOUBLEBUFFER, 1);
+    // Additional hints for better compatibility
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
 
     createWindow(screenWidth, screenHeight);
     glfwMakeContextCurrent(window);
@@ -67,7 +77,8 @@ void    MainGame::initSystems()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_CLAMP);
-    glEnable(GL_TEXTURE_2D);
+    // glEnable(GL_TEXTURE_2D) removed - deprecated in OpenGL 3.1+, not needed in OpenGL 4.1
+    // Textures are now managed through shaders and samplers
 
     shader.initializeShader();
 }
@@ -83,12 +94,34 @@ void   MainGame::initGL()
 
 void   MainGame::createWindow(int width, int height)
 {
+    // Try creating window with current hints
     window = glfwCreateWindow(getWidth(), getHeight(), "GameEngine", NULL, NULL);
     if (!window)
     {
-        glfwTerminate();
-        std::cout << "ERROR: could not open window with GLFW3\n";
-        exit(0);
+        const char* description;
+        int code = glfwGetError(&description);
+        std::cout << "WARNING: Failed to create window with core profile. Error: " << description << "\n";
+        
+        // Try fallback: compatibility profile
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
+        
+        window = glfwCreateWindow(getWidth(), getHeight(), "GameEngine", NULL, NULL);
+        if (!window)
+        {
+            code = glfwGetError(&description);
+            glfwTerminate();
+            std::cout << "ERROR: could not open window with GLFW3\n";
+            std::cout << "GLFW Error Code: " << code << "\n";
+            if (description) {
+                std::cout << "GLFW Error Description: " << description << "\n";
+            }
+            exit(0);
+        }
+        else
+        {
+            std::cout << "Successfully created window with compatibility profile\n";
+        }
     }
 }
 
@@ -163,8 +196,9 @@ void        MainGame::gameLoop()
     Texture     texture("assets/difuso_flip_oscuro.jpg");
     Material    material(texture, glm::vec3(0.0, 0.0, 0.0), 1, 8);
     Material    material2(texture2, glm::vec3(0.0, 0.0, 0.0), 1, 8);
-    Sprite sprite1("assets/craneo.OBJ");
-    Sprite sprite2("assets/monkey3.obj");
+    // Allocate on heap to avoid stack issues with large models
+    Sprite* sprite1 = new Sprite("assets/monkey3.obj");
+    Sprite* sprite2 = new Sprite("assets/monkey3.obj");
     
     //directional light
     DirectionalLight light(BaseLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -174,7 +208,6 @@ void        MainGame::gameLoop()
     std::vector<PointLight> pLightArray;
     pLightArray.push_back(pLight1);
     pLightArray.push_back(pLight2);
-    //segfaults if this line is removed. WTF??
     shader.setPointLight(pLightArray);
 
     std::vector<SpotLight> sLightArray;
@@ -212,13 +245,13 @@ void        MainGame::gameLoop()
             texture.useTexture();
             material.getColor() = glm::vec3(0.6, 0.3, 0.0);
             shader.update(transform, camera, material);
-            sprite1.draw();
+            sprite1->draw();
 
             //mesh two
             texture2.useTexture();
             material2.getColor() = glm::vec3(1.0, 1.0, 1.0);
-            shader.update(transform2, camera, material2);
-            sprite2.draw();
+            shader.update(transform2, camera, material);
+            sprite2->draw();
             
             shader.unuse();
 

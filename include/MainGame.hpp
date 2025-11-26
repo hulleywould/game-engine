@@ -13,10 +13,8 @@
 #include "Shader.hpp"
 #include "Camera.hpp"
 #include "PhongShader.hpp"
-#include "TextRenderer.hpp"
-
-
-enum class GameState {PLAY, EXIT, MENU};
+#include "GameState.hpp"
+#include "Menu.hpp"
 
 class MainGame {
     public:
@@ -39,14 +37,11 @@ class MainGame {
         float       camZ;
         static double    xpos;
         static double    ypos;
-        static bool      mouseButtonPressed;
 
     private:
         void        processInput();
         void        gameLoop();
         void        initSystems();
-        void        renderMenu();
-        void        processMenuInput();
         GLFWwindow  *window;
         int         screenWidth;
         int         screenHeight;
@@ -59,13 +54,7 @@ class MainGame {
         PointLight          pLight1;
         PointLight          pLight2;
         SpotLight           sLight1;
-        GlslProgram         menuShader;
-        TextRenderer        textRenderer;
-        int                 menuSelection; // 0 = Start Game, 1 = Exit
-        bool                wKeyPressed;
-        bool                sKeyPressed;
-        bool                enterKeyPressed;
-        bool                spaceKeyPressed;
+        Menu                menu;
         
 };
 

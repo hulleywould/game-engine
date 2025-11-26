@@ -30,6 +30,7 @@ class GlslProgram {
         void    addUniform(const std::string &uniformName);
         void    setUniformi(const std::string &uniformName, int value);
         void    setUniformf(const std::string &uniformName, float value);
+        void    setUniform(const std::string &uniformName, glm::vec2 value);
         void    setUniform(const std::string &uniformName, glm::vec3 value);
         void    setUniform(const std::string &uniformName, glm::mat4 value);
         void    setUniform(const std::string &uniformName, PointLight pointlight);

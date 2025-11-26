@@ -23,6 +23,7 @@ endif()
 
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(Freetype REQUIRED)
 
 # GLM is header-only, find it via pkg-config or assume it's in system include
 find_package(PkgConfig QUIET)
@@ -49,6 +50,8 @@ if(GLM_FOUND)
     include_directories(${GLM_INCLUDE_DIRS})
 endif()
 
+include_directories(${FREETYPE_INCLUDE_DIRS})
+
 # Link libraries
 if(glfw3_FOUND)
     target_link_libraries(game-engine ${GLFW_LIBRARIES} glfw)
@@ -58,7 +61,7 @@ else()
     target_link_libraries(game-engine glfw)
 endif()
 
-target_link_libraries(game-engine ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARIES})
+target_link_libraries(game-engine ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES})
 
 if(GLM_FOUND)
     target_link_libraries(game-engine ${GLM_LIBRARIES})

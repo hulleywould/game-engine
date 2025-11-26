@@ -22,6 +22,9 @@ sudo apt-get install -y libglew-dev
 echo "Installing GLM (header-only library)..."
 sudo apt-get install -y libglm-dev
 
+echo "Installing FreeType (font rendering library)..."
+sudo apt-get install -y libfreetype6-dev
+
 echo "Installation complete!"
 echo "To build the project, run:"
 echo "  mkdir -p build && cd build"

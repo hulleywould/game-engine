@@ -93,6 +93,11 @@ void    GlslProgram::setUniformf(const std::string &uniformName, float value)
     glUniform1f(uniformMap.find(uniformName)->second, value);
 }
 
+void    GlslProgram::setUniform(const std::string &uniformName, glm::vec2 value)
+{
+    glUniform2f(uniformMap.find(uniformName)->second, value[0], value[1]);
+}
+
 void    GlslProgram::setUniform(const std::string &uniformName, glm::vec3 value)
 {
     glUniform3f(uniformMap.find(uniformName)->second, value[0], value[1], value[2]);

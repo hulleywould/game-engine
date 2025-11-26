@@ -57,10 +57,32 @@ This installs:
 - cmake
 - OpenGL development libraries (Mesa)
 - GLFW3, GLEW, GLM libraries
+- FreeType (font rendering for in-game text)
 
 **Note**: The project includes a custom OBJ loader implementation for loading 3D models. No additional model loading libraries are required.
 
 ### 2. Build the Project
+
+#### Option 1: Using Ninja (Recommended - Faster Builds)
+
+First, install Ninja if you haven't already:
+```bash
+sudo apt install ninja-build
+```
+
+Then configure and build:
+```bash
+# Clean any existing build (if switching from Make)
+rm -rf build
+
+# Configure with Ninja
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -S . -B build
+
+# Build the project
+ninja -C build
+```
+
+#### Option 2: Using Make (Traditional)
 
 ```bash
 ./build.sh
@@ -73,6 +95,8 @@ cd build
 cmake ..
 make -j$(nproc)
 ```
+
+**Note**: Ninja is recommended as it provides faster incremental builds. If you've previously built with Make, remove the `build` directory before switching to Ninja.
 
 ### 3. Run the Game Engine
 
@@ -158,7 +182,7 @@ game-engine/
 - **OpenGL Version**: 3.3 Core Profile (WSLg compatible)
 - **Shading Language**: GLSL 3.30
 - **C++ Standard**: C++14
-- **Build System**: CMake 3.5+
+- **Build System**: CMake 3.5+ (Ninja recommended for faster builds)
 
 ### Assets Used
 
@@ -252,7 +276,9 @@ This project has been updated to run on WSL2:
 
 ### Build errors
 - Make sure all dependencies are installed: `sudo bash install.sh`
-- Clean build: `rm -rf build && mkdir build && cd build && cmake .. && make`
+- Clean build (Make): `rm -rf build && mkdir build && cd build && cmake .. && make`
+- Clean build (Ninja): `rm -rf build && cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -S . -B build && ninja -C build`
+- **Switching build systems**: If you get "generator mismatch" errors, remove the `build` directory and reconfigure with your desired generator
 
 ### Parsec remote access issues
 - Run `.\check-parsec.ps1` to diagnose configuration issues
